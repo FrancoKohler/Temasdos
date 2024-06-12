@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "serie": "Serie 1",
+    "tela": "Tela"
+  },
+  {
+    "id": "2",
+    "serie": "Serie 2",
+    "tela": "Tela"
+  },
+  {
+    "id": "3",
+    "serie": "Serie 3",
+    "tela": "Tela"
+  },
+  {
+    "id": "4",
+    "serie": "Serie 4",
+    "tela": "Tela"
+  },
+  {
+    "id": "5",
+    "serie": "Serie 5",
+    "tela": "Tela"
+  },
+  {
+    "id": "6",
+    "serie": "Serie 6",
+    "tela": "Tela"
+  },
+  {
+    "id": "7",
+    "serie": "Serie 7",
+    "tela": "Tela"
+  },
+  {
+    "id": "Promo",
+    "serie": "Promo",
+    "tela": "Piel"
+  },
+  {
+    "id": "A",
+    "serie": "Piel A",
+    "tela": "Piel"
+  },
+  {
+    "id": "B",
+    "serie": "Piel B",
+    "tela": "Piel"
+  },
+  {
+    "id": "C",
+    "serie": "Piel C",
+    "tela": "Piel"
+  },
+  {
+    "value": "C",
+    "serie": "Piel C",
+    "tela": "Piel"
+  }
+]

@@ -1,0 +1,229 @@
+@font-face {
+  font-family: "Domaine";
+  src: url("../fonts/DomaineDisplay-Medium.otf") format("opentype"),
+    url("../fonts/DomaineDisplay-Regular.otf") format("opentype"),
+    url("../fonts/DomaineDisplay-RegularItalic.otf") format("opentype");
+}
+@font-face {
+  font-family: "Minion";
+  src: url("../fonts/Montserrat-Regular.otf") format("opentype");
+  src: url("../fonts/Montserrat-Medium.otf") format("opentype");
+  src: url("../fonts/Montserrat-Light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  display: flex;
+  overflow-x: hidden;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: 100%;
+}
+/*HEADER*/
+header {
+  color: #343434;
+  width: 40%;
+  font-family: "Domaine";
+  font-size: 2.5rem;
+  border-bottom: #a5a5a5 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4rem;
+  padding-bottom: 1rem;
+}
+.titulo-solicitud {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  padding-top: 2rem;
+}
+h1 {
+  color: #343434;
+  font-family: "Domaine";
+  font-weight: 500;
+}
+h2 {
+  font-family: "Domaine";
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: #000000;
+}
+p {
+  color: #808080;
+  font-family: "Domaine";
+  font-weight: 300;
+}
+.seccion-titulo {
+  color: #343434;
+  font-size: 2rem;
+  font-family: "Domaine";
+}
+/*FORM DATOS*/
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  background-attachment: fixed;
+}
+
+aside {
+  padding: 2rem;
+  padding-right: 0;
+  background-color: #004177;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.form-inputs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  justify-content: center;
+  margin: auto;
+}
+.top-input {
+  border: #a5a5a5 1px solid;
+  padding-top: 1rem;
+  cursor: pointer;
+}
+.input-title {
+  font-family: "Montserrat";
+  font-weight: 400;
+  font-size: 1rem;
+  color: #343434;
+  padding-top: 1rem;
+}
+input {
+  display: flex;
+  font-family: "Montserrat";
+}
+.dropdown {
+  padding-top: 1rem;
+  border: #a5a5a5 1px solid;
+  cursor: pointer;
+}
+
+option {
+  font-family: "Montserrat";
+}
+select {
+  font-family: "Montserrat";
+}
+
+/*SECCION PIEZAS*/
+.pieza-seccion {
+  display: flex;
+  flex-direction: column;
+}
+
+.pieza-seccion,
+.modelo-seccion,
+.contacto-seccion,
+.tela-seccion {
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+  border-bottom: #343434 1px solid;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+}
+/* SECCION CONFIGURACION Y RESUMEN */
+.configuracion-seccion {
+  align-items: center;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+}
+.previsualizacion {
+  padding-top: 2rem;
+  width: 40%;
+}
+
+.div-configuracion-resumen {
+  display: flex;
+  flex-direction: row;
+}
+
+.div-configuracion-img {
+  flex: 2;
+}
+/*RESUMEN*/
+.section-resumen {
+  padding-top: 2rem;
+  border-top: #343434 1px solid;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  margin: auto;
+}
+
+/* Estilos para el título del resumen */
+.resumen-a {
+  font-family: "Domaine";
+  font-size: 1.5rem;
+  color: #343434;
+}
+
+/* Estilos para la lista de resumen */
+.ul-config {
+  font-family: "Montserrat";
+  color: #808080;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
+  padding-right: 2rem;
+}
+
+.div-descuento {
+  font-family: "Domaine";
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.div-descuento input {
+  border: #a5a5a5 1px solid;
+  padding-top: 1rem;
+  cursor: text;
+}
+
+button {
+  font-family: "Montserrat";
+  color: aliceblue;
+  background-color: #ded0b5;
+  border: none;
+  cursor: pointer;
+  padding: 1rem 1rem 1rem 1rem;
+  border-radius: 1.5rem;
+  margin-bottom: 6rem;
+  transition: 1s;
+}
+
+button:hover {
+  transition: 1s;
+  background-color: #ebe0ce;
+}

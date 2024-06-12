@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="https://images.squarespace-cdn.com/content/v1/5e615db2b03dc943e61acfa7/1594816802492-7H0LNNB09741O23X5IMY/favicon.ico?format=100w">
+    <title>TEMASDOS | Presupuesto</title>
+    <!--LINK CSS-->
+    <link rel="stylesheet" href="./css/style.css" />
+    <!--LINK JS-->
+   <script defer src="./app/index.js"></script>
+   <script defer src="./app/data.js"></script>
+    <!--JsPDF SCRIPT-->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  </head>
+  <body>
+    <header>TEMASDOS</header>
+    <div class="titulo-solicitud">
+        <h1>Solicita tu presupuesto online al instante</h1>
+        <p>Rellenar los datos y genera tu presupuesto en tiempo real</p>
+    </div>
+  
+    <section class="contacto-seccion">
+        <h2 class="seccion-titulo">Datos de empresa</h2><!--VER SEPARACION ARRIBA-->
+        <div class="form">   
+                <!--NOMBRE INPUT-->
+                <div class="form-inputs">
+                    <a class="input-title"> Nombre de empresa / Tienda*</a>
+                    <input
+                  class="top-input"
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                    />
+                </div>
+                <div class="form-inputs">
+                    <a class="input-title"> CIF/NIF (Opcional)</a>
+                    <input
+                  class="top-input"
+                  type="text"
+                  id="cif"
+                  name="cif"
+                  required
+                    />
+                </div>
+                
+              </div>
+        </div>
+    </section>
+    <section class="contacto-seccion">
+        <h2 class="seccion-titulo">Datos del cliente</h2>
+        <div class="form">   
+                <!--NOMBRE INPUT-->
+                <div class="form-inputs">
+                    <a class="input-title"> Nombre y apellido / Nombre de empresa*</a>
+                    <input
+                  class="top-input"
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                    />
+                </div>
+                
+                <!--NIF/CIF INPUT-->
+                <div class="form-inputs">
+                    <a class="input-title"> CIF/NIF (Opcional)</a>
+                    <input
+                  class="top-input"
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                    />
+                </div>
+                <!--EMAIL/TELEFONO INPUT-->
+                <div class="form-inputs">
+                    <a class="input-title"> Email*</a>
+                    <input
+                    class="top-input"
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    />
+                </div>
+                <div class="form-inputs">
+                    <a class="input-title"> Telefono(Opcional)</a>
+                    <input
+                    class="top-input"
+                    type="tel"
+                    id="cell"
+                    name="phone"
+                    required
+                    />
+                </div>
+                 <!--PAIS SELECTOR-->
+                <div class="form-inputs">
+                <label for="pais" class="input-title">Pais*</label>
+                <select name="pais" id="pais" class="dropdown">
+                <option value="españa">España</option>
+                <option value="francia">Francia</option>
+                <option value="italia">Italia</option>
+                <option value="alemania">Alemania</option>
+                </select>
+                </div>
+                <!--CIUDAD SELECTOR-->
+                <div class="form-inputs">
+                <label for="ciudad" class="input-title">Ciudad*</label>
+                <select name="ciudad" id="ciudad" class="dropdown">
+                <option value="valencia">Valencia</option>
+                <option value="barcelona">Barcelona</option>
+                <option value="madrid">Madrid</option>
+                <option value="lisboa">Lisboa</option>
+                </select>
+                </div>
+                <!--CODIGO POSTAL SELECTOR-->
+                <div class="form-inputs">
+                        <a class="input-title"> Código Postal*</a>
+                        <input
+                        class="top-input"
+                        type="codigo"
+                        id="codigoPostal"
+                        name="codigoPostal"
+                        required
+                        />
+                </div>
+                <!--LOCALIDAD SELECTOR-->
+                <div class="form-inputs">
+                        <a class="input-title"> Localidad*</a>
+                        <input
+                        class="top-input"
+                        type="local"
+                        id="local"
+                        name="local"
+                        required
+                        />
+                </div>
+                <!--PISO/PUERTA SELECTOR-->
+                <div class="form-inputs">
+                        <a class="input-title"> Puerta/Piso*</a>
+                        <input
+                        class="top-input"
+                        type="puerta"
+                        id="puerta"
+                        name="puerta"
+                        required
+                        />
+                </div>
+                
+              </div>
+        </div>
+    </section>
+    <!--MODELO SELECTOR-->
+    
+    </section>
+    <section class="modelo-seccion" >
+        <div class="form-inputs">
+            <a class="seccion-titulo"> Modelo</a>
+                <label for="modelo" class="input-title">Selecciona el modelo para la configuración</label>
+                
+                <select name="modelo" id="modelo" class="dropdown">
+                <option value="yute">Yute</option>
+                <option value="tundra">Tundra</option>
+                <option value="giant">Giant</option>
+                <option value="tucson">Tucson</option>
+                
+                </select>
+                </div>
+        </div>
+    </section>
+    <!--TELA SELECTOR-->
+    <section class="tela-seccion" >
+        <div class="form-inputs">
+            <a class="seccion-titulo"> Serie / Tela</a>
+                <label for="modelo" class="input-title">Selecciona el tejido o piel para la configuración</label>
+                <select name="tela" id="tela" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+        </div>
+    </section>
+    <!--PIEZA SELECTOR-->
+    <section class="pieza-seccion" >
+        <div class="form-inputs">
+            
+                 <a class="seccion-titulo"> Piezas</a>
+                <label for="pieza" class="input-title">Selecciona las piezas para la configuración</label>
+                <select name="pieza" id="pieza" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+
+               
+                <!--SUMPLEMENTO MOTOR-->
+               
+            </div>
+            
+    </section>
+    <!--CONFIGURACION SECCION-->
+    <section class="configuracion-seccion">
+            <a class="seccion-titulo"> Configuración</a>
+            <img class="previsualizacion" src="./assets/imgpresetconfig.png" alt="imagen previa de configuracion">
+    </section>
+    <section class="section-resumen">
+                <a class="resumen-a">Resumen</a>
+                <ul class="ul-config">
+                    <!--LI FILLED WITH JS-->
+            </ul>
+            <div class="div-descuento">
+            <a>Código de descuento</a>
+            <input>
+            </div>
+    </section>
+    <button  id="generateBtn">GENERAR PRESUPUESTO</button>
+    <!-- <p id="orderCode"></p> -->
+  </body>
+</html>

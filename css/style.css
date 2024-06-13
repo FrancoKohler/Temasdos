@@ -138,6 +138,15 @@ select {
   justify-content: center;
   margin: auto;
 }
+/*SUPLEMENTO MOTOR*/
+.suplemento {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 1rem;
+  font-family: "Montserrat";
+}
 /* SECCION CONFIGURACION Y RESUMEN */
 .configuracion-seccion {
   align-items: center;
@@ -210,16 +219,17 @@ select {
   padding-top: 1rem;
   cursor: text;
 }
+/*BOTON*/
 
 button {
   font-family: "Montserrat";
   color: aliceblue;
-  background-color: #ded0b5;
+  background-color: #d1c2a5;
   border: none;
   cursor: pointer;
   padding: 1rem 1rem 1rem 1rem;
   border-radius: 1.5rem;
-  margin-bottom: 6rem;
+  margin-bottom: 4rem;
   transition: 1s;
 }
 

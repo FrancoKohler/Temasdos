@@ -171,6 +171,53 @@
                 </div>
         </div>
     </section>
+    <!--PIEZA SELECTOR-->
+    <section class="pieza-seccion" >
+        <div class="form-inputs">
+            
+                <a class="seccion-titulo"> Piezas</a>
+                <label for="pieza" class="input-title">Selecciona las piezas para la configuración</label>
+                <select name="pieza" id="pieza1" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+                <select name="pieza" id="pieza2" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+                <select name="pieza" id="pieza3" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+                <select name="pieza" id="pieza4" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+                <select name="pieza" id="pieza5" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+                <select name="pieza" id="pieza6" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+                <select name="pieza" id="pieza7" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+                <select name="pieza" id="pieza8" class="dropdown">
+                <!--LLENO CON JS-->
+                </select>
+                <!--SUMPLEMENTO MOTOR-->
+                <div class="suplemento" id="suplemento">
+                  <a class="input-motor"> Suplemento Motor = 179€ </a>
+                        <input
+                        class="input-motor"
+                        type="number"
+                        id="motor"
+                        name="motor"
+                        required
+                        min="0"
+                        max="8"
+                        />
+                </div>
+            </div>
+            
+            
+    </section>
     <!--TELA SELECTOR-->
     <section class="tela-seccion" >
         <div class="form-inputs">
@@ -181,38 +228,23 @@
                 </select>
         </div>
     </section>
-    <!--PIEZA SELECTOR-->
-    <section class="pieza-seccion" >
-        <div class="form-inputs">
-            
-                 <a class="seccion-titulo"> Piezas</a>
-                <label for="pieza" class="input-title">Selecciona las piezas para la configuración</label>
-                <select name="pieza" id="pieza" class="dropdown">
-                <!--LLENO CON JS-->
-                </select>
-
-               
-                <!--SUMPLEMENTO MOTOR-->
-               
-            </div>
-            
-    </section>
+    
     <!--CONFIGURACION SECCION-->
     <section class="configuracion-seccion">
             <a class="seccion-titulo"> Configuración</a>
             <img class="previsualizacion" src="./assets/imgpresetconfig.png" alt="imagen previa de configuracion">
     </section>
     <section class="section-resumen">
-                <a class="resumen-a">Resumen</a>
-                <ul class="ul-config">
+                <a class="seccion-titulo">Resumen</a>
+                <ul class="ul-config" id="resumen">
                     <!--LI FILLED WITH JS-->
-            </ul>
+              </ul>
             <div class="div-descuento">
             <a>Código de descuento</a>
             <input>
             </div>
     </section>
-    <button  id="generateBtn">GENERAR PRESUPUESTO</button>
+    <button id="generateBtn">GENERAR PRESUPUESTO</button>
     <!-- <p id="orderCode"></p> -->
   </body>
 </html>

@@ -1,36 +1,3 @@
-// Función para obtener las piezas seleccionadas
-function obtenerPiezasSeleccionadas() {
-  const piezasSeleccionadas = [];
-  for (let i = 1; i <= 8; i++) {
-    const piezaSelect = document.getElementById(`pieza${i}`);
-    const piezaSeleccionada = {
-      id: piezaSelect.value,
-      nombre: piezaSelect.options[piezaSelect.selectedIndex].text,
-    };
-    if (piezaSeleccionada.id !== "None") {
-      piezasSeleccionadas.push(piezaSeleccionada);
-    }
-  }
-  return piezasSeleccionadas;
-}
-
-// Función para obtener el precio de la pieza seleccionada
-function obtenerPrecioPieza(piezaId) {
-  const precioSeleccionado = obtenerPrecioSeleccionado(piezaId);
-  const pieza = piezas.find((p) => p.id === piezaId);
-  if (pieza && precioSeleccionado) {
-    const precio = pieza.price.find((p) => p.material === precioSeleccionado);
-    return precio ? precio.precio : null;
-  }
-  return null;
-}
-
-// Función para obtener el precio seleccionado de la pieza
-function obtenerPrecioSeleccionado(piezaId) {
-  const piezaSelect = document.getElementById(piezaId);
-  return piezaSelect ? piezaSelect.value : null;
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   /* SE LE COMANDA QUE COJA DEL URL DATA.JSON*/
   const url = "data.json";
@@ -83,23 +50,13 @@ document.addEventListener("DOMContentLoaded", function () {
       generarResumen();
     });
   });
-
-  // Llamar a generarResumen() inicialmente para mostrar el resumen al cargar la página
-  generarResumen();
 });
 
-// Función para generar el resumen
 function generarResumen() {
   // Obtener valores seleccionados
   const modelo = document.getElementById("modelo").value;
   const piezas = obtenerPiezasSeleccionadas();
   const tela = document.getElementById("tela").value;
-
-  // Obtener precios de las piezas seleccionadas
-  const preciosPiezas = piezas.map((pieza) => {
-    const precio = obtenerPrecioPieza(pieza.id);
-    return precio ? `${pieza.nombre}: ${precio}` : null;
-  });
 
   // Filtrar piezas seleccionadas que no sean "None"
   const piezasFiltradas = piezas.filter((pieza) => pieza.id !== "None");
@@ -111,10 +68,30 @@ function generarResumen() {
         ${
           piezasFiltradas.length > 0
             ? "<li>Piezas seleccionadas:</li><ul>" +
-              preciosPiezas.map((precio) => `<li>${precio}</li>`).join("") +
+              piezasFiltradas
+                .map((pieza) => `<li>${pieza.nombre}</li>`)
+                .join("") +
               "</ul>"
             : ""
         }
         <li>Tela seleccionada: ${tela}</li>
     `;
 }
+
+function obtenerPiezasSeleccionadas() {
+  const piezasSeleccionadas = [];
+  for (let i = 1; i <= 8; i++) {
+    const piezaSelect = document.getElementById(`pieza${i}`);
+    const piezaSeleccionada = {
+      id: piezaSelect.value,
+      nombre: piezaSelect.options[piezaSelect.selectedIndex].text,
+    };
+    if (piezaSeleccionada.id !== "None") {
+      piezasSeleccionadas.push(piezaSeleccionada);
+    }
+  }
+  return piezasSeleccionadas;
+}
+
+// Llamar a generarResumen() inicialmente para mostrar el resumen al cargar la página
+generarResumen();

@@ -162,10 +162,10 @@
                 <label for="modelo" class="input-title">Selecciona el modelo para la configuración</label>
                 
                 <select name="modelo" id="modelo" class="dropdown">
-                <option value="yute">Yute</option>
-                <option value="tundra">Tundra</option>
-                <option value="giant">Giant</option>
-                <option value="tucson">Tucson</option>
+                <option value="Yute">Yute</option>
+                <option value="Tundra">Tundra</option>
+                <option value="Giant">Giant</option>
+                <option value="Tucson">Tucson</option>
                 
                 </select>
                 </div>
@@ -213,6 +213,7 @@
                         min="0"
                         max="8"
                         />
+                    <div id="output"></div>
                 </div>
             </div>
             
@@ -232,7 +233,9 @@
     <!--CONFIGURACION SECCION-->
     <section class="configuracion-seccion">
             <a class="seccion-titulo"> Configuración</a>
-            <img class="previsualizacion" src="./assets/imgpresetconfig.png" alt="imagen previa de configuracion">
+            <div class="pre-config" id="imagenPiezas">
+              <!--LLENO EN JS-->
+            </div>
     </section>
     <section class="section-resumen">
                 <a class="seccion-titulo">Resumen</a>

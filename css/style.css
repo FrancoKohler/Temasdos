@@ -237,3 +237,8 @@ button:hover {
   transition: 1s;
   background-color: #ebe0ce;
 }
+
+/*RESUMEN LI*/
+li {
+  color: #000000;
+}

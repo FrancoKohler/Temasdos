@@ -152,18 +152,7 @@ function mostrarImagenes() {
   const imagenesDiv = document.getElementById("imagenPiezas");
   imagenesDiv.innerHTML = ""; // Limpiar las imágenes anteriores
   let lastPieceId = null;
-  let isYUTRASide = false; // Variable para verificar si la pieza seleccionada está al lado de YUTRA
-
-  // Obtener la posición de YUTRA
-  const yutraElement = document.getElementById("YUTRA");
-  let yutraPosition = null;
-  if (yutraElement) {
-    const rect = yutraElement.getBoundingClientRect();
-    yutraPosition = {
-      x: rect.left + window.scrollX,
-      y: rect.top + window.scrollY + yutraElement.offsetHeight, // Posición YUTRA + altura de YUTRA
-    };
-  }
+  let isYUTRASide = false; // Flag para saber si la pieza actual está al lado de YUTRA
 
   for (let i = 1; i <= 8; i++) {
     const piezaSelect = document.getElementById(`pieza${i}`);
@@ -186,23 +175,14 @@ function mostrarImagenes() {
         imgElement.style.margin = "0px";
         imgElement.style.verticalAlign = "top";
 
-        if (lastPieceId === "YUTRA" && !isYUTRASide && yutraPosition) {
-          // Calcular la posición de la siguiente imagen debajo de YUTRA
-          const offsetX = yutraPosition.x; // Misma posición horizontal que YUTRA
-          const offsetY = yutraPosition.y; // Posición vertical debajo de YUTRA
-
-          // Trasladar y rotar la imagen debajo de YUTRA
-          imgElement.style.position = "absolute";
-          imgElement.style.left = `${offsetX}px`;
-          imgElement.style.top = `${offsetY}px`;
-          imgElement.style.transform = "rotate(90deg)";
-          isYUTRASide = false; // Marcar que la pieza actual está al lado de YUTRA
-        } else if (medida === "114") {
-          imgElement.style.width = "1140px";
-          imgElement.style.height = "auto";
-        } else if (medida === "104") {
-          imgElement.style.width = "1140px";
-          imgElement.style.height = "auto";
+        if (lastPieceId === "YUTRA" && !isYUTRASide) {
+          // Rotar y trasladar la imagen si la pieza anterior es YUTRA
+          imgElement.style.transform =
+            "rotate(90deg) translateX(150px) translateY(100px)";
+          isYUTRASide = true; // Marcar que la pieza actual está al lado de YUTRA
+        } else if (lastPieceId === "YUTRA") {
+          // Reiniciar el flag si la pieza actual no está al lado de YUTRA
+          isYUTRASide = false;
         }
 
         imagenesDiv.appendChild(imgElement);

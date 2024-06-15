@@ -152,7 +152,8 @@ function mostrarImagenes() {
   const imagenesDiv = document.getElementById("imagenPiezas");
   imagenesDiv.innerHTML = ""; // Limpiar las imágenes anteriores
   let lastPieceId = null;
-  let isYUTRASide = false; // Flag para saber si la pieza actual está al lado de YUTRA
+  let yutraPosition = null; // Variable para guardar la posición de YUTRA
+  let nextTop = 0; // Coordenada Y para las siguientes imágenes
 
   for (let i = 1; i <= 8; i++) {
     const piezaSelect = document.getElementById(`pieza${i}`);
@@ -163,7 +164,6 @@ function mostrarImagenes() {
       const piezaId = selectedOption.value;
       const containerWidth = selectedOption.dataset.width || "215px"; // Valor predeterminado si no se especifica
       const containerHeight = selectedOption.dataset.height || "350px"; // Valor predeterminado si no se especifica
-      const medida = selectedOption.dataset.medida; // Obtener la medida de la imagen
 
       if (imageUrl && piezaId !== "None") {
         const imgElement = document.createElement("img");
@@ -174,23 +174,49 @@ function mostrarImagenes() {
         imgElement.style.maxHeight = containerHeight;
         imgElement.style.margin = "0px";
         imgElement.style.verticalAlign = "top";
+        imgElement.style.position = "absolute";
 
-        if (lastPieceId === "YUTRA" && !isYUTRASide) {
-          // Rotar y trasladar la imagen si la pieza anterior es YUTRA
-          imgElement.style.transform =
-            "rotate(90deg) translateX(150px) translateY(100px)";
-          isYUTRASide = true; // Marcar que la pieza actual está al lado de YUTRA
+        if (lastPieceId === "YUTRA" && yutraPosition) {
+          // Rotar y posicionar la imagen debajo de YUTRA
+          imgElement.style.transform = "rotate(90deg)";
+          imgElement.style.left = `${yutraPosition.left}px`;
+          imgElement.style.top = `${
+            yutraPosition.top + yutraPosition.height
+          }px`;
+          nextTop = yutraPosition.top + yutraPosition.height; // Actualizar la posición vertical base
         } else if (lastPieceId === "YUTRA") {
-          // Reiniciar el flag si la pieza actual no está al lado de YUTRA
-          isYUTRASide = false;
+          // La primera imagen después de YUTRA
+          imgElement.style.transform = "rotate(90deg)";
+          imgElement.style.left = `${yutraPosition.left}px`;
+          imgElement.style.top = `${nextTop}px`;
+          nextTop += parseInt(containerWidth, 10); // Incrementar para la siguiente imagen
+        } else {
+          imgElement.style.position = "relative";
+          imgElement.style.display = "inline-block";
+          imgElement.style.left = "0"; // Resetear el left para imágenes normales
+          imgElement.style.top = "0"; // Resetear el top para imágenes normales
         }
 
         imagenesDiv.appendChild(imgElement);
+
+        if (piezaId === "YUTRA") {
+          // Guardar la posición de YUTRA
+          const rect = imgElement.getBoundingClientRect();
+          yutraPosition = {
+            left: rect.left - imagenesDiv.getBoundingClientRect().left,
+            top: rect.top - imagenesDiv.getBoundingClientRect().top,
+            width: rect.width,
+            height: rect.height,
+          };
+        }
+
         lastPieceId = piezaId;
       }
     }
   }
 }
+
+// Asegúrate de que el contenedor "imagenesDiv" tenga position: relative en el CSS
 
 // Llamar al resumen y previsualización de imágenes al cargar la página
 generarResumen();

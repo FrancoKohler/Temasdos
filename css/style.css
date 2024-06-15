@@ -242,3 +242,6 @@ button:hover {
 li {
   color: #000000;
 }
+#imagenPiezas {
+  position: relative;
+}

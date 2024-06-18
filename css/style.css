@@ -153,9 +153,9 @@ select {
   padding-bottom: 2rem;
   padding-top: 2rem;
   width: 60%;
+  height: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   margin: auto;
 }
 .previsualizacion {
@@ -170,6 +170,9 @@ select {
 
 .div-configuracion-img {
   flex: 2;
+}
+.img-config {
+  transform-origin: 0% 0%;
 }
 /*RESUMEN*/
 .section-resumen {

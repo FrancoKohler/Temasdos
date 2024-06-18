@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Conjunto para almacenar los nombres de los materiales
   const materialesSet = new Set();
 
-  // Recorrer las piezas para obtener los nombres de los materiales
+  /*TOMA CADA PIEZA Y COGE EL MATERIAL*/
   piezas.forEach((pieza) => {
     if (pieza.price) {
       pieza.price.forEach((precio) => {
@@ -11,13 +10,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Elemento select del dropdown
   const dropdown = document.getElementById("tela");
 
-  // Limpiar el dropdown por si ya tiene opciones
   dropdown.innerHTML = "";
 
-  // Crear y agregar opciones al dropdown
+  /*AGREGAR OPCIONES DROPDOWN*/
   materialesSet.forEach((material) => {
     const option = document.createElement("option");
     option.value = material;
@@ -39,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
         option.value = pieza.id;
         option.textContent = `${pieza.title}`;
         option.dataset.price = JSON.stringify(pieza.price);
-        option.dataset.imageUrl = pieza.imageUrl; // Agregar URL de imagen como atributo de datos
+        option.dataset.imageUrl = pieza.imageUrl;
         dropdown.appendChild(option);
       });
     }
@@ -151,10 +148,11 @@ function obtenerPrecioPorMaterial(idPieza, tela) {
 function mostrarImagenes() {
   const imagenesDiv = document.getElementById("imagenPiezas");
   imagenesDiv.innerHTML = ""; // Limpiar las imágenes anteriores
-  let lastPieceId = null;
-  let yutraPosition = null; // Variable para guardar la posición de YUTRA
-  let nextTop = 0; // Coordenada Y para las siguientes imágenes
-
+  let yutraPosition = null;
+  let currentY = 0;
+  let currentX = 0; // Acumulador de la posición Y para las siguientes imágenes
+  let rotateAfterYutra = false; // Indica si se debe rotar la imagen después de YUTRA
+  let previousYutraPosition = null; // Guardar la posición de la pieza YUTRA anterior
   for (let i = 1; i <= 8; i++) {
     const piezaSelect = document.getElementById(`pieza${i}`);
 
@@ -162,45 +160,22 @@ function mostrarImagenes() {
       const selectedOption = piezaSelect.options[piezaSelect.selectedIndex];
       const imageUrl = selectedOption.dataset.imageUrl;
       const piezaId = selectedOption.value;
-      const containerWidth = selectedOption.dataset.width || "215px"; // Valor predeterminado si no se especifica
-      const containerHeight = selectedOption.dataset.height || "350px"; // Valor predeterminado si no se especifica
+
+      const containerHeight =
+        parseInt(selectedOption.dataset.height, 10) || 350; // Valor predeterminado si no se especifica
 
       if (imageUrl && piezaId !== "None") {
         const imgElement = document.createElement("img");
         imgElement.src = imageUrl;
         imgElement.alt = selectedOption.textContent;
-
-        imgElement.style.maxWidth = containerWidth;
-        imgElement.style.maxHeight = containerHeight;
         imgElement.style.margin = "0px";
         imgElement.style.verticalAlign = "top";
         imgElement.style.position = "absolute";
-
-        if (lastPieceId === "YUTRA" && yutraPosition) {
-          // Rotar y posicionar la imagen debajo de YUTRA
-          imgElement.style.transform = "rotate(90deg)";
-          imgElement.style.left = `${yutraPosition.left}px`;
-          imgElement.style.top = `${
-            yutraPosition.top + yutraPosition.height
-          }px`;
-          nextTop = yutraPosition.top + yutraPosition.height; // Actualizar la posición vertical base
-        } else if (lastPieceId === "YUTRA") {
-          // La primera imagen después de YUTRA
-          imgElement.style.transform = "rotate(90deg)";
-          imgElement.style.left = `${yutraPosition.left}px`;
-          imgElement.style.top = `${nextTop}px`;
-          nextTop += parseInt(containerWidth, 10); // Incrementar para la siguiente imagen
-        } else {
-          imgElement.style.position = "relative";
-          imgElement.style.display = "inline-block";
-          imgElement.style.left = "0"; // Resetear el left para imágenes normales
-          imgElement.style.top = "0"; // Resetear el top para imágenes normales
-        }
-
+        imgElement.classList.add("img-config");
         imagenesDiv.appendChild(imgElement);
 
         if (piezaId === "YUTRA") {
-          // Guardar la posición de YUTRA
+          // Guardar la posición de YUTRA después de que se haya renderizado en el DOM
           const rect = imgElement.getBoundingClientRect();
           yutraPosition = {
             left: rect.left - imagenesDiv.getBoundingClientRect().left,
@@ -208,9 +183,26 @@ function mostrarImagenes() {
             width: rect.width,
             height: rect.height,
           };
-        }
+          currentY = yutraPosition.top + yutraPosition.height;
+          currentX = yutraPosition.left + yutraPosition.width; // Establecer la posición inicial para las siguientes imágenes
+          rotateAfterYutra = true; // Indicar que las siguientes imágenes deben rotarse
+        } else if (rotateAfterYutra) {
+          // Rotar y posicionar la imagen debajo de la última imagen añadida
+          imgElement.style.transform = "rotate(90deg)";
+          imgElement.style.position = "absolute"; // Asegurar que la imagen se posiciona de forma absoluta
+          imgElement.style.left = `${currentX}px`;
+          imgElement.style.top = `${currentY}px`;
 
-        lastPieceId = piezaId;
+          // Actualizar las coordenadas para la siguiente imagen
+          const imgRect = imgElement.getBoundingClientRect();
+          currentY += imgRect.height;
+        } else {
+          // Posicionar la imagen normalmente
+          imgElement.style.position = "relative";
+          imgElement.style.display = "inline-block";
+          imgElement.style.left = "0"; // Resetear el left para imágenes normales
+          imgElement.style.top = "0"; // Resetear el top para imágenes normales
+        }
       }
     }
   }

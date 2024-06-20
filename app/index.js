@@ -145,6 +145,7 @@ function obtenerPrecioPorMaterial(idPieza, tela) {
   return 0;
 }
 
+/*USO DE CHATGPT PARA VE BIEN ROTACION PERO CON LOGICA HA SIDO MEJORADA. ERROR ACTUAL QUE LA SEGUNDA YUTRA NO APARECE BIEN */
 function mostrarImagenes() {
   const imagenesDiv = document.getElementById("imagenPiezas");
   imagenesDiv.innerHTML = ""; // Limpiar las imágenes anteriores
@@ -208,8 +209,82 @@ function mostrarImagenes() {
   }
 }
 
-// Asegúrate de que el contenedor "imagenesDiv" tenga position: relative en el CSS
-
-// Llamar al resumen y previsualización de imágenes al cargar la página
 generarResumen();
 mostrarImagenes();
+
+/*DROPDOWN*/
+
+const button = document.querySelector("#dropBtn");
+const dropdownContent = document.querySelector(".dropdown-muestras-content");
+
+button.addEventListener("click", function () {
+  this.classList.toggle("selected");
+  dropdownContent.classList.toggle("show");
+});
+
+/*CARGA LAS IMG A LAS PESTAÑAS*/
+function cargarImagenes() {
+  const tabs = {
+    brixton: document.getElementById("brixtonContent"),
+    camila: document.getElementById("camilaContent"),
+    montreal: document.getElementById("montrealContent"),
+    osaka: document.getElementById("osakaContent"),
+    terranova: document.getElementById("terranovaContent"),
+  };
+
+  for (const [key, images] of Object.entries(muestras)) {
+    const container = tabs[key];
+
+    images.forEach((item) => {
+      // Crear un elemento <div> para contener la imagen y el párrafo
+      const divElement = document.createElement("div");
+      divElement.classList.add("imagen-container");
+
+      // Crear un elemento <p> para el nombre de la imagen
+      const pElement = document.createElement("p");
+      pElement.textContent = item.nombre;
+      pElement.classList.add("p-container");
+
+      // Crear un elemento <img> para la imagen
+      const imgElement = document.createElement("img");
+      imgElement.src = item.img;
+      imgElement.alt = key;
+      imgElement.classList.add("muestra-img");
+
+      /*AÑADIR DIV, P E IMG*/
+      divElement.appendChild(imgElement);
+      divElement.appendChild(pElement);
+      container.appendChild(divElement);
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", cargarImagenes);
+
+/*MOSTRAR PESTAÑAS*/
+
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll(".tab");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", function () {
+      tabs.forEach((t) => t.classList.remove("active"));
+
+      /*SOLO LA PESTAÑA ACTIVA SE VE*/
+      tab.classList.add("active");
+
+      /*OCULTA CONTENIDO PESTAÑAS*/
+      document.querySelectorAll(".tab-content").forEach((content) => {
+        content.style.display = "none";
+      });
+
+      /*MOSTRAR CONTENIDO DE LA ACTIVE*/
+      const tabName = tab.textContent.trim().toLowerCase();
+      const tabContent = document.getElementById(tabName);
+      tabContent.style.display = "block";
+
+      const dropdown = document.querySelector(".dropdown-muestras");
+      dropdown.classList.add("show");
+    });
+  });
+});

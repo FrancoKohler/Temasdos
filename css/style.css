@@ -223,8 +223,7 @@ select {
   cursor: text;
 }
 /*BOTON*/
-
-button {
+.btn-pdf {
   font-family: "Montserrat";
   color: aliceblue;
   background-color: #d1c2a5;
@@ -236,7 +235,7 @@ button {
   transition: 1s;
 }
 
-button:hover {
+.btn-pdf:hover {
   transition: 1s;
   background-color: #ebe0ce;
 }
@@ -250,75 +249,101 @@ li {
 }
 
 /* Basic styling for the dropdown */
-.dropdown-muestras {
-  position: relative;
-  display: inline-block;
+.teladiv {
+  width: 100%;
 }
-.dropbtn {
-  display: flex;
-  align-items: center;
-  margin: auto;
-  margin-top: 2rem;
-  font-family: "Montserrat";
-  background-color: #d1c2a5;
-  color: white;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-dropbtn:hover {
-  transition: 1s;
-  background-color: #ebe0ce;
-}
-.dropdown-muestras-content {
-  display: none;
-  position: absolute;
-  background-color: #ffffff;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  width: 610px;
-}
-.dropdown-muestras-content.show {
-  display: block;
-}
-.tab-content {
-  display: none;
-  padding: 20px;
-  border-top: none;
-}
-.dropdown-muestras-content.show .tab-content {
-  display: block;
-}
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: #000000 1px solid;
-  transition: font-weight 0.3s ease;
-  font-family: "Montserrat";
-  cursor: pointer;
-}
-.tab.active {
-  font-weight: 600;
-  transition: 0.5s;
-}
-.muestra-img {
-  width: 100px;
-}
-.content-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-.imagen-container {
+.tela-div-h {
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
 }
-.p-container {
-  color: #000000;
+.telas-image {
+  width: 50px;
+}
+.span-telas {
   font-family: "Montserrat";
+}
+.custom-select {
+  position: relative;
+}
+
+.select-box {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  min-width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+.tabs {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-around;
+  border-bottom: 1px solid #ccc;
+  font-family: "Montserrat";
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.tablinks {
+  border: none;
+  cursor: pointer;
+  height: 100%;
+  color: #343434;
+}
+.tablinks.active {
+  font-weight: 600;
+  color: #000000;
+  background-color: #f1f1f1;
+}
+.tabcontent {
+  display: none;
+}
+.tabcontent.active {
+  /*TABS  CON LAS IMG Y NOMBRES*/
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tabcontent p {
+  font-family: "Montserrat";
+  color: #000000;
   font-weight: 400;
   font-size: 12px;
+  margin: 0;
+  padding: 5px;
+}
+.item-container {
+  cursor: pointer;
+  width: 15%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
 }

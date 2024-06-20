@@ -214,77 +214,73 @@ mostrarImagenes();
 
 /*DROPDOWN*/
 
-const button = document.querySelector("#dropBtn");
-const dropdownContent = document.querySelector(".dropdown-muestras-content");
+function toggleDropdown() {
+  document.getElementById("dropdown-content").classList.toggle("show");
+}
 
-button.addEventListener("click", function () {
-  this.classList.toggle("selected");
-  dropdownContent.classList.toggle("show");
-});
-
-/*CARGA LAS IMG A LAS PESTAÑAS*/
-function cargarImagenes() {
-  const tabs = {
-    brixton: document.getElementById("brixtonContent"),
-    camila: document.getElementById("camilaContent"),
-    montreal: document.getElementById("montrealContent"),
-    osaka: document.getElementById("osakaContent"),
-    terranova: document.getElementById("terranovaContent"),
-  };
-
-  for (const [key, images] of Object.entries(muestras)) {
-    const container = tabs[key];
-
-    images.forEach((item) => {
-      // Crear un elemento <div> para contener la imagen y el párrafo
-      const divElement = document.createElement("div");
-      divElement.classList.add("imagen-container");
-
-      // Crear un elemento <p> para el nombre de la imagen
-      const pElement = document.createElement("p");
-      pElement.textContent = item.nombre;
-      pElement.classList.add("p-container");
-
-      // Crear un elemento <img> para la imagen
-      const imgElement = document.createElement("img");
-      imgElement.src = item.img;
-      imgElement.alt = key;
-      imgElement.classList.add("muestra-img");
-
-      /*AÑADIR DIV, P E IMG*/
-      divElement.appendChild(imgElement);
-      divElement.appendChild(pElement);
-      container.appendChild(divElement);
-    });
+function openTab(evt, tabName) {
+  var tabcontent = document.getElementsByClassName("tabcontent");
+  for (var i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].classList.remove("active");
+  }
+  var tablinks = document.getElementsByClassName("tablinks");
+  for (var i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  var tab = document.getElementById(tabName);
+  if (tab) {
+    tab.classList.add("active");
+    evt.currentTarget.className += " active";
   }
 }
 
-document.addEventListener("DOMContentLoaded", cargarImagenes);
+function selectOption(element) {
+  document.getElementById("selected-option").innerText = element.dataset.nombre;
+  document.getElementById("dropdown-content").classList.remove("show");
+}
+function initializeTabs() {
+  const tabContentContainer = document.getElementById("tab-content-container");
+  for (const [tabName, items] of Object.entries(muestras)) {
+    const tabContentDiv = document.createElement("div");
+    tabContentDiv.id = tabName;
+    tabContentDiv.className = "tabcontent";
+    items.forEach((item) => {
+      const itemContainer = document.createElement("div");
+      itemContainer.className = "item-container";
 
-/*MOSTRAR PESTAÑAS*/
+      const option = document.createElement("p");
+      option.dataset.nombre = item.nombre;
+      option.innerHTML = `
+        <img src="${item.img}" alt="${item.nombre}" class="telas-image">
+        <p>${item.nombre}</p>
+      `;
 
-document.addEventListener("DOMContentLoaded", function () {
-  const tabs = document.querySelectorAll(".tab");
+      option.onclick = function () {
+        selectOption(this);
+      };
 
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", function () {
-      tabs.forEach((t) => t.classList.remove("active"));
-
-      /*SOLO LA PESTAÑA ACTIVA SE VE*/
-      tab.classList.add("active");
-
-      /*OCULTA CONTENIDO PESTAÑAS*/
-      document.querySelectorAll(".tab-content").forEach((content) => {
-        content.style.display = "none";
-      });
-
-      /*MOSTRAR CONTENIDO DE LA ACTIVE*/
-      const tabName = tab.textContent.trim().toLowerCase();
-      const tabContent = document.getElementById(tabName);
-      tabContent.style.display = "block";
-
-      const dropdown = document.querySelector(".dropdown-muestras");
-      dropdown.classList.add("show");
+      itemContainer.appendChild(option);
+      tabContentDiv.appendChild(itemContainer);
     });
-  });
-});
+    tabContentContainer.appendChild(tabContentDiv);
+  }
+}
+
+// Eliminar el cierre automático del dropdown al hacer clic fuera
+window.onclick = function (event) {
+  if (
+    !event.target.matches(".select-box") &&
+    !event.target.matches(".tablinks")
+  ) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains("show")) {
+        openDropdown.classList.remove("show");
+      }
+    }
+  }
+};
+
+// Inicializa las tabs al cargar la página
+document.addEventListener("DOMContentLoaded", initializeTabs);

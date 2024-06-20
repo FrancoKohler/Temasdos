@@ -171,6 +171,41 @@
                 </div>
         </div>
     </section>
+    
+    <!--TELA SELECTOR-->
+     <section class="tela-seccion">
+        <div class="form-inputs">
+            <a class="seccion-titulo"> Serie</a>
+            <label for="modelo" class="input-title">Selecciona el tejido o piel para la configuración</label>
+            <select name="tela" id="tela" class="dropdown">
+                <!-- LLENO CON JS -->
+            </select>
+        </div>
+        <div class="custom-select">
+            <div class="teladiv">
+              <div class="tela-div-h">
+                <a class="seccion-titulo">Tela</a>
+                <label for="modelo" class="input-title">Selecciona la piel para la configuración</label>
+              </div>
+                <div class="select-box" onclick="toggleDropdown()">
+                    <span class="span-telas" id="selected-option">Selecciona una opción</span>
+                    <div class="dropdown-icon">&#9662;</div>
+                </div>
+                <div id="dropdown-content" class="dropdown-content">
+                    <div class="tabs">
+                        <button class="tablinks" onclick="openTab(event, 'brixton')">Brixton</button>
+                        <button class="tablinks" onclick="openTab(event, 'camila')">Camila</button>
+                        <button class="tablinks" onclick="openTab(event, 'montreal')">Montreal</button>
+                        <button class="tablinks" onclick="openTab(event, 'osaka')">Osaka</button>
+                        <button class="tablinks" onclick="openTab(event, 'terranova')">Terranova</button>
+                    </div>
+                    <div id="tab-content-container">
+                        <!-- Aquí se cargarán las opciones de cada tab -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!--PIEZA SELECTOR-->
     <section class="pieza-seccion" >
         <div class="form-inputs">
@@ -219,59 +254,6 @@
             
             
     </section>
-    <!--TELA SELECTOR-->
-    <section class="tela-seccion" >
-        <div class="form-inputs">
-            <a class="seccion-titulo"> Serie / Tela</a>
-                <label for="modelo" class="input-title">Selecciona el tejido o piel para la configuración</label>
-                <select name="tela" id="tela" class="dropdown">
-                <!--LLENO CON JS-->
-                </select>
-        </div>
-        <div class="dropdown-muestras">
-        <button class="dropbtn" id="dropBtn">Muestra de Telas</button>
-        <div class="dropdown-muestras-content">
-            <div class="tabs">
-                <div class="tab">BRIXTON</div>
-                <div class="tab">CAMILA</div>
-                <div class="tab" >MONTREAL</div>
-                <div class="tab">OSAKA</div>
-                <div class="tab" >TERRANOVA</div>
-            </div>
-            <div id="brixton" class="tab-content">
-            
-                <div id="brixtonContent" class="content-container">
-                  <!--JS-->
-                </div>
-            </div>
-            <div id="camila" class="tab-content">
-                
-                <div id="camilaContent" class="content-container">
-                  <!--JS-->
-                </div>
-            </div>
-            <div id="montreal" class="tab-content">
-                
-                <div id="montrealContent" class="content-container">
-                  <!--JS-->
-                </div>
-            </div>
-            <div id="osaka" class="tab-content">
-               
-                <div id="osakaContent" class="content-container">
-                  <!--JS-->
-                </div>
-            </div>
-            <div id="terranova" class="tab-content">
-                
-                <div id="terranovaContent" class="content-container">
-                  <!--JS-->
-                </div>
-            </div>
-        </div>
-    </div>
-    </section>
-    
     <!--CONFIGURACION SECCION-->
     <section class="configuracion-seccion">
             <a class="seccion-titulo"> Configuración</a>
@@ -289,7 +271,8 @@
             <input>
             </div>
     </section>
-    <button id="generateBtn">GENERAR PRESUPUESTO</button>
+    <button class="btn-pdf" id="generateBtn">GENERAR PRESUPUESTO</button>
     <!-- <p id="orderCode"></p> -->
+    
   </body>
 </html>

@@ -42,37 +42,130 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+/*DROPDOWN*/
 
-/*SCRIPT PREVISUALIZACION DE IMG*/
+function toggleDropdown() {
+  document.getElementById("dropdown-content").classList.toggle("show");
+}
+
+function openTab(evt, tabName) {
+  var tabcontent = document.getElementsByClassName("tabcontent");
+  for (var i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].classList.remove("active");
+  }
+  var tablinks = document.getElementsByClassName("tablinks");
+  for (var i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  var tab = document.getElementById(tabName);
+  if (tab) {
+    tab.classList.add("active");
+    evt.currentTarget.className += " active";
+  }
+}
+/*FUNCION DE CREACION DE DIVS DE OPTIONS CON LAS IMG*/
+function selectOption(element) {
+  document.getElementById("selected-option").innerText = element.dataset.nombre;
+  document.getElementById("dropdown-content").classList.remove("show");
+}
+function initializeTabs() {
+  const tabContentContainer = document.getElementById("tab-content-container");
+  for (const [tabName, items] of Object.entries(muestras)) {
+    const tabContentDiv = document.createElement("div");
+    tabContentDiv.id = tabName;
+    tabContentDiv.className = "tabcontent";
+    items.forEach((item) => {
+      const itemContainer = document.createElement("div");
+      itemContainer.className = "item-container";
+
+      const option = document.createElement("p");
+      option.dataset.nombre = item.nombre;
+      option.innerHTML = `
+        <img src="${item.img}" alt="${item.nombre}" class="telas-image">
+        <p>${item.nombre}</p>
+      `;
+
+      option.onclick = function () {
+        selectOption(this);
+      };
+
+      itemContainer.appendChild(option);
+      tabContentDiv.appendChild(itemContainer);
+    });
+    tabContentContainer.appendChild(tabContentDiv);
+  }
+}
+
+/*EVITA QUE SE CIERRE AL APRETAR LAS TABS*/
+window.onclick = function (event) {
+  if (
+    !event.target.matches(".select-box") &&
+    !event.target.matches(".tablinks")
+  ) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains("show")) {
+        openDropdown.classList.remove("show");
+      }
+    }
+  }
+};
+
+document.addEventListener("DOMContentLoaded", initializeTabs);
+document.addEventListener("DOMContentLoaded", function () {
+  // Obtener el dropdown y agregar un event listener para capturar cambios
+  const dropdown = document.getElementById("dropdown-content");
+
+  dropdown.addEventListener("click", function (event) {
+    // Verificar si el click fue en un botón dentro del dropdown
+    if (event.target.tagName === "BUTTON") {
+      // Obtener el texto del botón seleccionado
+      const selectedOption = event.target.textContent;
+
+      // Actualizar el resumen
+      const resumenElement = document.getElementById("resumen");
+      const liElement = document.createElement("li");
+      liElement.textContent = `Selección: ${selectedOption}`;
+
+      // Agregar el elemento al resumen (asegurándote de no duplicar opciones)
+      resumenElement.innerHTML = ""; // Limpiar el contenido previo del resumen
+      resumenElement.appendChild(liElement);
+    }
+  });
+});
 
 /* RESUMEN */
 document.addEventListener("DOMContentLoaded", function () {
-  const selectElements = document.querySelectorAll("select");
+  // Obtener el dropdown-content y agregar un event listener para capturar cambios
+  const dropdownContent = document.getElementById("dropdown-content");
 
-  selectElements.forEach((select) => {
-    select.addEventListener("change", function () {
+  dropdownContent.addEventListener("click", function (event) {
+    // Verificar si el click fue en un botón dentro del dropdown
+    if (event.target.tagName === "BUTTON") {
+      // Obtener el texto del botón seleccionado
+      const selectedOption = event.target.textContent;
+
+      // Actualizar el resumen con la selección de la tela
+      const resumenElement = document.getElementById("resumen");
+      const telaLi = document.createElement("li");
+      telaLi.textContent = `Tela: ${selectedOption}`;
+
+      // Agregar el elemento al resumen después de las otras selecciones
+      const motorLi = resumenElement.querySelector("li:last-child");
+      resumenElement.insertBefore(telaLi, motorLi);
+
+      // Llamar a la función para actualizar el resumen completo
       generarResumen();
-      mostrarImagenes();
-    });
+    }
   });
-
-  const motorInput = document.getElementById("motor");
-  motorInput.addEventListener("input", function () {
-    const motorValue = parseInt(motorInput.value, 10);
-    const motorTotal = motorValue * 179;
-    document.getElementById(
-      "output"
-    ).textContent = `Total Motor: ${motorTotal}€`;
-    generarResumen();
-  });
-
-  generarResumen();
 });
 
 function generarResumen() {
   const modelo = document.getElementById("modelo").value;
   const piezasSeleccionadas = obtenerPiezasSeleccionadas();
   const tela = document.getElementById("tela").value;
+  const material = document.getElementById("selected-option").textContent;
 
   const piezasFiltradas = piezasSeleccionadas.filter(
     (pieza) => pieza.id !== "None"
@@ -91,26 +184,27 @@ function generarResumen() {
 
   const resumenElement = document.getElementById("resumen");
   resumenElement.innerHTML = `
-    <li>Modelo: ${modelo}</li>
-    ${
-      piezasFiltradas.length > 0
-        ? "<li>Piezas seleccionadas:</li><ul>" +
-          piezasFiltradas
-            .map(
-              (pieza) =>
-                `<li>${pieza.nombre} - ${obtenerPrecioPorMaterial(
-                  pieza.id,
-                  tela
-                ).toFixed(2)}€</li>`
-            )
-            .join("") +
-          "</ul>"
-        : ""
-    }
-    <li>Tela seleccionada: ${tela}</li>
-    <li>Precio Motor: ${motorTotal.toFixed(2)}€</li>
-    <li>Precio Total: ${precioTotal.toFixed(2)}€</li>
-  `;
+        <li>Modelo: ${modelo}</li>
+        ${
+          piezasFiltradas.length > 0
+            ? "<li>Piezas seleccionadas:</li><ul>" +
+              piezasFiltradas
+                .map(
+                  (pieza) =>
+                    `<li>${pieza.nombre} - ${obtenerPrecioPorMaterial(
+                      pieza.id,
+                      tela
+                    ).toFixed(2)}€</li>`
+                )
+                .join("") +
+              "</ul>"
+            : ""
+        }
+        <li>Serie: ${tela}</li>
+        <li>Tela: ${material}</li>
+        <li>Precio Motor: ${motorTotal.toFixed(2)}€</li>
+        <li>Precio Total: ${precioTotal.toFixed(2)}€</li>
+    `;
 }
 
 function obtenerPiezasSeleccionadas() {
@@ -211,76 +305,3 @@ function mostrarImagenes() {
 
 generarResumen();
 mostrarImagenes();
-
-/*DROPDOWN*/
-
-function toggleDropdown() {
-  document.getElementById("dropdown-content").classList.toggle("show");
-}
-
-function openTab(evt, tabName) {
-  var tabcontent = document.getElementsByClassName("tabcontent");
-  for (var i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].classList.remove("active");
-  }
-  var tablinks = document.getElementsByClassName("tablinks");
-  for (var i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  var tab = document.getElementById(tabName);
-  if (tab) {
-    tab.classList.add("active");
-    evt.currentTarget.className += " active";
-  }
-}
-
-function selectOption(element) {
-  document.getElementById("selected-option").innerText = element.dataset.nombre;
-  document.getElementById("dropdown-content").classList.remove("show");
-}
-function initializeTabs() {
-  const tabContentContainer = document.getElementById("tab-content-container");
-  for (const [tabName, items] of Object.entries(muestras)) {
-    const tabContentDiv = document.createElement("div");
-    tabContentDiv.id = tabName;
-    tabContentDiv.className = "tabcontent";
-    items.forEach((item) => {
-      const itemContainer = document.createElement("div");
-      itemContainer.className = "item-container";
-
-      const option = document.createElement("p");
-      option.dataset.nombre = item.nombre;
-      option.innerHTML = `
-        <img src="${item.img}" alt="${item.nombre}" class="telas-image">
-        <p>${item.nombre}</p>
-      `;
-
-      option.onclick = function () {
-        selectOption(this);
-      };
-
-      itemContainer.appendChild(option);
-      tabContentDiv.appendChild(itemContainer);
-    });
-    tabContentContainer.appendChild(tabContentDiv);
-  }
-}
-
-// Eliminar el cierre automático del dropdown al hacer clic fuera
-window.onclick = function (event) {
-  if (
-    !event.target.matches(".select-box") &&
-    !event.target.matches(".tablinks")
-  ) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    for (var i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains("show")) {
-        openDropdown.classList.remove("show");
-      }
-    }
-  }
-};
-
-// Inicializa las tabs al cargar la página
-document.addEventListener("DOMContentLoaded", initializeTabs);

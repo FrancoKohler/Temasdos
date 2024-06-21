@@ -248,7 +248,7 @@ li {
   position: relative;
 }
 
-/* Basic styling for the dropdown */
+/*DROPDOWN*/
 .teladiv {
   width: 100%;
 }
@@ -262,6 +262,7 @@ li {
 }
 .span-telas {
   font-family: "Montserrat";
+  font-size: smaller;
 }
 .custom-select {
   position: relative;
@@ -273,7 +274,8 @@ li {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border: 1px solid #ccc;
+  padding-left: 1px;
+  border: 1px solid #a5a5a5;
 }
 
 .dropdown-content {
@@ -290,7 +292,12 @@ li {
 .dropdown-content.show {
   display: block;
 }
+.dropdown-icon {
+  transform: rotate(90deg);
+  font-size: small;
+}
 .tabs {
+  background-color: #ffff;
   cursor: pointer;
   display: flex;
   flex-wrap: wrap;
@@ -302,6 +309,8 @@ li {
   font-family: "Montserrat";
   padding-top: 1rem;
   padding-bottom: 1rem;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
 }
 
 .tablinks {
@@ -309,11 +318,12 @@ li {
   cursor: pointer;
   height: 100%;
   color: #343434;
+  background-color: #ffff;
 }
 .tablinks.active {
   font-weight: 600;
   color: #000000;
-  background-color: #f1f1f1;
+  background-color: #ffff;
 }
 .tabcontent {
   display: none;

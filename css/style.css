@@ -317,13 +317,19 @@ li {
   border: none;
   cursor: pointer;
   height: 100%;
-  color: #343434;
+  color: #696969;
   background-color: #ffff;
+  transition: 0.5s ease;
 }
 .tablinks.active {
   font-weight: 600;
   color: #000000;
-  background-color: #ffff;
+  text-decoration: underline;
+}
+.tablinks:hover {
+  transition: 0.5s ease;
+  color: #999999;
+  font-weight: 200;
 }
 .tabcontent {
   display: none;

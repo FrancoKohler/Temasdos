@@ -94,6 +94,9 @@ function initializeTabs() {
     });
     tabContentContainer.appendChild(tabContentDiv);
   }
+
+  // Abrir automáticamente la pestaña de Brixton al cargar la página
+  openTab({ currentTarget: document.querySelector(".tablinks") }, "brixton");
 }
 
 /*EVITA QUE SE CIERRE AL APRETAR LAS TABS*/

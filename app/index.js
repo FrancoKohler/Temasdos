@@ -115,7 +115,6 @@ window.onclick = function (event) {
 document.addEventListener("DOMContentLoaded", initializeTabs);
 document.addEventListener("DOMContentLoaded", function () {
   // Obtener el dropdown y agregar un event listener para capturar cambios
-  const dropdown = document.getElementById("dropdown-content");
 
   dropdown.addEventListener("click", function (event) {
     // Verificar si el click fue en un botón dentro del dropdown
@@ -137,35 +136,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /* RESUMEN */
 document.addEventListener("DOMContentLoaded", function () {
-  // Obtener el dropdown-content y agregar un event listener para capturar cambios
-  const dropdownContent = document.getElementById("dropdown-content");
+  const selectElements = document.querySelectorAll("select");
 
-  dropdownContent.addEventListener("click", function (event) {
-    // Verificar si el click fue en un botón dentro del dropdown
-    if (event.target.tagName === "BUTTON") {
-      // Obtener el texto del botón seleccionado
-      const selectedOption = event.target.textContent;
-
-      // Actualizar el resumen con la selección de la tela
-      const resumenElement = document.getElementById("resumen");
-      const telaLi = document.createElement("li");
-      telaLi.textContent = `Tela: ${selectedOption}`;
-
-      // Agregar el elemento al resumen después de las otras selecciones
-      const motorLi = resumenElement.querySelector("li:last-child");
-      resumenElement.insertBefore(telaLi, motorLi);
-
-      // Llamar a la función para actualizar el resumen completo
+  selectElements.forEach((select) => {
+    select.addEventListener("change", function () {
       generarResumen();
-    }
+      mostrarImagenes();
+    });
   });
+
+  const motorInput = document.getElementById("motor");
+  motorInput.addEventListener("input", function () {
+    const motorValue = parseInt(motorInput.value, 10);
+    const motorTotal = motorValue * 179;
+    document.getElementById(
+      "output"
+    ).textContent = `Total Motor: ${motorTotal}€`;
+    generarResumen();
+  });
+
+  generarResumen();
 });
 
 function generarResumen() {
   const modelo = document.getElementById("modelo").value;
   const piezasSeleccionadas = obtenerPiezasSeleccionadas();
   const tela = document.getElementById("tela").value;
-  const material = document.getElementById("selected-option").textContent;
 
   const piezasFiltradas = piezasSeleccionadas.filter(
     (pieza) => pieza.id !== "None"
@@ -184,27 +180,26 @@ function generarResumen() {
 
   const resumenElement = document.getElementById("resumen");
   resumenElement.innerHTML = `
-        <li>Modelo: ${modelo}</li>
-        ${
-          piezasFiltradas.length > 0
-            ? "<li>Piezas seleccionadas:</li><ul>" +
-              piezasFiltradas
-                .map(
-                  (pieza) =>
-                    `<li>${pieza.nombre} - ${obtenerPrecioPorMaterial(
-                      pieza.id,
-                      tela
-                    ).toFixed(2)}€</li>`
-                )
-                .join("") +
-              "</ul>"
-            : ""
-        }
-        <li>Serie: ${tela}</li>
-        <li>Tela: ${material}</li>
-        <li>Precio Motor: ${motorTotal.toFixed(2)}€</li>
-        <li>Precio Total: ${precioTotal.toFixed(2)}€</li>
-    `;
+    <li>Modelo: ${modelo}</li>
+    ${
+      piezasFiltradas.length > 0
+        ? "<li>Piezas seleccionadas:</li><ul>" +
+          piezasFiltradas
+            .map(
+              (pieza) =>
+                `<li>${pieza.nombre} - ${obtenerPrecioPorMaterial(
+                  pieza.id,
+                  tela
+                ).toFixed(2)}€</li>`
+            )
+            .join("") +
+          "</ul>"
+        : ""
+    }
+    <li>Tela seleccionada: ${tela}</li>
+    <li>Precio Motor: ${motorTotal.toFixed(2)}€</li>
+    <li>Precio Total: ${precioTotal.toFixed(2)}€</li>
+  `;
 }
 
 function obtenerPiezasSeleccionadas() {

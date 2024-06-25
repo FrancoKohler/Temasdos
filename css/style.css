@@ -38,6 +38,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin: auto;
   padding-top: 2rem;
 }
@@ -61,6 +62,9 @@ p {
   color: #343434;
   font-size: 2rem;
   font-family: "Domaine";
+}
+.configuracion-titulo {
+  padding-bottom: 2rem;
 }
 /*FORM DATOS*/
 
@@ -174,6 +178,12 @@ select {
 .img-config {
   transform-origin: 0% 0%;
 }
+.pre-config {
+  display: block;
+  justify-content: center;
+  align-self: center;
+  height: 100%;
+}
 /*RESUMEN*/
 .section-resumen {
   padding-top: 2rem;
@@ -197,6 +207,7 @@ select {
 /* Estilos para la lista de resumen */
 .ul-config {
   font-family: "Montserrat";
+
   color: #808080;
   list-style: none;
   display: flex;

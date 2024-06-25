@@ -175,9 +175,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const selectedOption = event.target.textContent;
 
       /*Acyualiza resumen*/
-      const resumenElement = document.getElementById("resumen");
-      const liElement = document.createElement("li");
-      liElement.textContent = `Selección: ${selectedOption}`;
 
       resumenElement.innerHTML = "";
       resumenElement.appendChild(liElement);

@@ -8,11 +8,14 @@
     <!--LINK CSS-->
     <link rel="stylesheet" href="./css/style.css" />
     <!--LINK JS-->
-   <script defer src="./app/index.js"></script>
+   
    <script defer src="./app/data.js"></script>
+   <script defer src="./app/index.js"></script>
+  
     <!--JsPDF SCRIPT-->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+      <!-- Incluye html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
   </head>
   <body>
     <header>TEMASDOS</header>
@@ -30,7 +33,7 @@
                     <input
                   class="top-input"
                   type="text"
-                  id="name"
+                  id="nombreEmpresa"
                   name="name"
                   required
                     />
@@ -40,7 +43,7 @@
                     <input
                   class="top-input"
                   type="text"
-                  id="cif"
+                  id="cifEmpresa"
                   name="cif"
                   required
                     />
@@ -58,7 +61,7 @@
                     <input
                   class="top-input"
                   type="text"
-                  id="name"
+                  id="nombreCliente"
                   name="name"
                   required
                     />
@@ -70,7 +73,7 @@
                     <input
                   class="top-input"
                   type="text"
-                  id="name"
+                  id="cifCliente"
                   name="name"
                   required
                     />
@@ -81,7 +84,7 @@
                     <input
                     class="top-input"
                     type="email"
-                    id="email"
+                    id="emailCliente"
                     name="email"
                     required
                     />
@@ -91,7 +94,7 @@
                     <input
                     class="top-input"
                     type="tel"
-                    id="cell"
+                    id="telefonoCliente"
                     name="phone"
                     required
                     />
@@ -133,7 +136,7 @@
                         <input
                         class="top-input"
                         type="local"
-                        id="local"
+                        id="localidad"
                         name="local"
                         required
                         />
@@ -144,7 +147,7 @@
                         <input
                         class="top-input"
                         type="puerta"
-                        id="puerta"
+                        id="puertaPiso"
                         name="puerta"
                         required
                         />
@@ -177,7 +180,7 @@
         <div class="form-inputs">
             <a class="seccion-titulo"> Serie</a>
             <label for="modelo" class="input-title">Selecciona el tejido o piel para la configuración</label>
-            <select name="tela" id="tela" class="dropdown">
+            <select  name="tela" id="tela" class="dropdown">
                 <!-- LLENO CON JS -->
             </select>
         </div>

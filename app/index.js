@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const materialesSet = new Set();
 
-  /*TOMA CADA PIEZA Y COGE EL MATERIAL*/
+  // TOMA CADA PIEZA Y COGE EL MATERIAL
   piezas.forEach((pieza) => {
     if (pieza.price) {
       pieza.price.forEach((precio) => {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   dropdown.innerHTML = "";
 
-  /*AGREGAR OPCIONES DROPDOWN*/
+  // AGREGAR OPCIONES DROPDOWN
   materialesSet.forEach((material) => {
     const option = document.createElement("option");
     option.value = material;
@@ -24,9 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
   generarResumen();
 });
 
-/*SCRIPT PARA LLENAR LAS PIEZAS*/
+// SCRIPT PARA LLENAR LAS PIEZAS
 document.addEventListener("DOMContentLoaded", function () {
-  /*COGE LOS ID DE PIEZAS DEL 1-8*/
+  // COGE LOS ID DE PIEZAS DEL 1-8
   for (let i = 1; i <= 8; i++) {
     const dropdown = document.getElementById(`pieza${i}`);
 
@@ -42,8 +42,52 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
-/*DROPDOWN*/
+// Event listener para el botón "GENERAR PRESUPUESTO"
+document.getElementById("generateBtn").addEventListener("click", function () {
+  const nombreEmpresa = document.getElementById("nameEmpresa").value;
+  const cifEmpresa = document.getElementById("cifEmpresa").value;
+  const nombreCliente = document.getElementById("nameCliente").value;
+  const cifCliente = document.getElementById("cifCliente").value;
+  const emailCliente = document.getElementById("emailCliente").value;
+  const telefonoCliente = document.getElementById("telefonoCliente").value;
+  const pais = document.getElementById("pais").value;
+  const ciudad = document.getElementById("ciudad").value;
+  const codigoPostal = document.getElementById("codigoPostal").value;
+  const localidad = document.getElementById("localidad").value;
+  const puertaPiso = document.getElementById("puertaPiso").value;
+  const modelo = document.getElementById("modelo").value;
+  const tela = document.getElementById("tela").value;
+  const muestra = document.getElementById("selected-option").dataset.nombre;
 
+  // Capturar el contenido de #imagenPiezas como una imagen usando html2canvas
+  html2canvas(document.getElementById("imagenPiezas")).then(function (canvas) {
+    const imgData = canvas.toDataURL("image/jpeg");
+
+    const doc = new jsPDF();
+
+    doc.text(20, 20, `Nombre de empresa: ${nombreEmpresa}`);
+    doc.text(20, 30, `CIF/NIF de empresa: ${cifEmpresa}`);
+    doc.text(20, 40, `Nombre del cliente: ${nombreCliente}`);
+    doc.text(20, 50, `CIF/NIF del cliente: ${cifCliente}`);
+    doc.text(20, 60, `Email del cliente: ${emailCliente}`);
+    doc.text(20, 70, `Teléfono del cliente: ${telefonoCliente}`);
+    doc.text(20, 80, `País: ${pais}`);
+    doc.text(20, 90, `Ciudad: ${ciudad}`);
+    doc.text(20, 100, `Código Postal: ${codigoPostal}`);
+    doc.text(20, 110, `Localidad: ${localidad}`);
+    doc.text(20, 120, `Puerta/Piso: ${puertaPiso}`);
+    doc.text(20, 130, `Modelo seleccionado: ${modelo}`);
+    doc.text(20, 140, `Serie seleccionada: ${tela}`);
+    doc.text(20, 150, `Tela seleccionada: ${muestra}`);
+
+    // Agregar la imagen capturada a tu PDF
+    doc.addImage(imgData, "JPEG", 20, 160, 170, 100);
+    // Guardar el PDF con el nombre "presupuesto.pdf"
+    doc.save("presupuesto.pdf");
+  });
+});
+
+// DROPDOWN
 function toggleDropdown() {
   document.getElementById("dropdown-content").classList.toggle("show");
 }
@@ -63,11 +107,17 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active";
   }
 }
-/*FUNCION DE CREACION DE DIVS DE OPTIONS CON LAS IMG*/
+
+// FUNCION DE CREACION DE DIVS DE OPTIONS CON LAS IMG
 function selectOption(element) {
-  document.getElementById("selected-option").innerText = element.dataset.nombre;
+  const selectedOption = element.dataset.nombre;
+  document.getElementById(
+    "selected-option"
+  ).innerText = `Tela seleccionada: ${selectedOption}`;
+  document.getElementById("selected-option").dataset.nombre = selectedOption;
   document.getElementById("dropdown-content").classList.remove("show");
 }
+
 function initializeTabs() {
   const tabContentContainer = document.getElementById("tab-content-container");
   for (const [tabName, items] of Object.entries(muestras)) {
@@ -81,7 +131,7 @@ function initializeTabs() {
       const option = document.createElement("p");
       option.dataset.nombre = item.nombre;
       option.innerHTML = `
-        <img src="${item.img}" alt="${item.nombre}" class="telas-image">
+        <img id="muestraImg" src="${item.img}" alt="${item.nombre}" class="telas-image">
         <p>${item.nombre}</p>
       `;
 
@@ -95,11 +145,11 @@ function initializeTabs() {
     tabContentContainer.appendChild(tabContentDiv);
   }
 
-  // Abrir automáticamente la pestaña de Brixton al cargar la página
+  // ABRI DIRECTAMENTE LA BRIXTON AL ABRIR EL TAB
   openTab({ currentTarget: document.querySelector(".tablinks") }, "brixton");
 }
 
-/*EVITA QUE SE CIERRE AL APRETAR LAS TABS*/
+// EVITA QUE SE CIERRE AL APRETAR LAS TABS
 window.onclick = function (event) {
   if (
     !event.target.matches(".select-box") &&
@@ -117,27 +167,25 @@ window.onclick = function (event) {
 
 document.addEventListener("DOMContentLoaded", initializeTabs);
 document.addEventListener("DOMContentLoaded", function () {
-  // Obtener el dropdown y agregar un event listener para capturar cambios
+  const dropdown = document.getElementById("dropdown-content");
 
   dropdown.addEventListener("click", function (event) {
-    // Verificar si el click fue en un botón dentro del dropdown
     if (event.target.tagName === "BUTTON") {
-      // Obtener el texto del botón seleccionado
+      /*Obtener texto de elemento seleccionado*/
       const selectedOption = event.target.textContent;
 
-      // Actualizar el resumen
+      /*Acyualiza resumen*/
       const resumenElement = document.getElementById("resumen");
       const liElement = document.createElement("li");
       liElement.textContent = `Selección: ${selectedOption}`;
 
-      // Agregar el elemento al resumen (asegurándote de no duplicar opciones)
-      resumenElement.innerHTML = ""; // Limpiar el contenido previo del resumen
+      resumenElement.innerHTML = "";
       resumenElement.appendChild(liElement);
     }
   });
 });
 
-/* RESUMEN */
+// RESUMEN
 document.addEventListener("DOMContentLoaded", function () {
   const selectElements = document.querySelectorAll("select");
 
@@ -164,7 +212,11 @@ document.addEventListener("DOMContentLoaded", function () {
 function generarResumen() {
   const modelo = document.getElementById("modelo").value;
   const piezasSeleccionadas = obtenerPiezasSeleccionadas();
-  const tela = document.getElementById("tela").value;
+  const telaDropdown = document.getElementById("tela");
+  const tela =
+    telaDropdown.options[telaDropdown.selectedIndex]?.text ||
+    "Seleccione una tela"; // Obtener el texto seleccionado o "Seleccione una tela" si no hay selección
+  const muestra = document.getElementById("selected-option").dataset.nombre;
 
   const piezasFiltradas = piezasSeleccionadas.filter(
     (pieza) => pieza.id !== "None"
@@ -199,7 +251,8 @@ function generarResumen() {
           "</ul>"
         : ""
     }
-    <li>Tela seleccionada: ${tela}</li>
+    <li>Serie seleccionada: ${tela}</li>
+    <li>Tela seleccionada: ${muestra}</li>
     <li>Precio Motor: ${motorTotal.toFixed(2)}€</li>
     <li>Precio Total: ${precioTotal.toFixed(2)}€</li>
   `;
@@ -237,7 +290,7 @@ function obtenerPrecioPorMaterial(idPieza, tela) {
   return 0;
 }
 
-/*USO DE CHATGPT PARA VE BIEN ROTACION PERO CON LOGICA HA SIDO MEJORADA. ERROR ACTUAL QUE LA SEGUNDA YUTRA NO APARECE BIEN */
+// USO DE CHATGPT PARA VE BIEN ROTACION PERO CON LOGICA HA SIDO MEJORADA. ERROR ACTUAL QUE LA SEGUNDA YUTRA NO APARECE BIEN
 function mostrarImagenes() {
   const imagenesDiv = document.getElementById("imagenPiezas");
   imagenesDiv.innerHTML = ""; // Limpiar las imágenes anteriores

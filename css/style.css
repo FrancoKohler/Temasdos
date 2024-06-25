@@ -353,6 +353,9 @@ li {
   margin: 0;
   padding: 5px;
 }
+.tabcontent p:hover {
+  font-weight: 700;
+}
 .item-container {
   cursor: pointer;
   width: 15%;

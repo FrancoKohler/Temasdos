@@ -1,5 +1,16 @@
 {
   "dependencies": {
-    "jspdf": "^2.5.1"
+    "express": "^4.19.2",
+    "jspdf": "^2.5.1",
+    "pdfkit": "^0.15.0"
+  },
+  "name": "temasods",
+  "main": "pdfgenerator.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon app/pdfgenerator.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }

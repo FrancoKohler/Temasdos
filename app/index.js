@@ -42,50 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
-// Event listener para el botón "GENERAR PRESUPUESTO"
-document.getElementById("generateBtn").addEventListener("click", function () {
-  const nombreEmpresa = document.getElementById("nameEmpresa").value;
-  const cifEmpresa = document.getElementById("cifEmpresa").value;
-  const nombreCliente = document.getElementById("nameCliente").value;
-  const cifCliente = document.getElementById("cifCliente").value;
-  const emailCliente = document.getElementById("emailCliente").value;
-  const telefonoCliente = document.getElementById("telefonoCliente").value;
-  const pais = document.getElementById("pais").value;
-  const ciudad = document.getElementById("ciudad").value;
-  const codigoPostal = document.getElementById("codigoPostal").value;
-  const localidad = document.getElementById("localidad").value;
-  const puertaPiso = document.getElementById("puertaPiso").value;
-  const modelo = document.getElementById("modelo").value;
-  const tela = document.getElementById("tela").value;
-  const muestra = document.getElementById("selected-option").dataset.nombre;
-
-  // Capturar el contenido de #imagenPiezas como una imagen usando html2canvas
-  html2canvas(document.getElementById("imagenPiezas")).then(function (canvas) {
-    const imgData = canvas.toDataURL("image/jpeg");
-
-    const doc = new jsPDF();
-
-    doc.text(20, 20, `Nombre de empresa: ${nombreEmpresa}`);
-    doc.text(20, 30, `CIF/NIF de empresa: ${cifEmpresa}`);
-    doc.text(20, 40, `Nombre del cliente: ${nombreCliente}`);
-    doc.text(20, 50, `CIF/NIF del cliente: ${cifCliente}`);
-    doc.text(20, 60, `Email del cliente: ${emailCliente}`);
-    doc.text(20, 70, `Teléfono del cliente: ${telefonoCliente}`);
-    doc.text(20, 80, `País: ${pais}`);
-    doc.text(20, 90, `Ciudad: ${ciudad}`);
-    doc.text(20, 100, `Código Postal: ${codigoPostal}`);
-    doc.text(20, 110, `Localidad: ${localidad}`);
-    doc.text(20, 120, `Puerta/Piso: ${puertaPiso}`);
-    doc.text(20, 130, `Modelo seleccionado: ${modelo}`);
-    doc.text(20, 140, `Serie seleccionada: ${tela}`);
-    doc.text(20, 150, `Tela seleccionada: ${muestra}`);
-
-    // Agregar la imagen capturada a tu PDF
-    doc.addImage(imgData, "JPEG", 20, 160, 170, 100);
-    // Guardar el PDF con el nombre "presupuesto.pdf"
-    doc.save("presupuesto.pdf");
-  });
-});
 
 // DROPDOWN
 function toggleDropdown() {
@@ -173,13 +129,61 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.target.tagName === "BUTTON") {
       /*Obtener texto de elemento seleccionado*/
       const selectedOption = event.target.textContent;
-
-      /*Acyualiza resumen*/
-
-      resumenElement.innerHTML = "";
-      resumenElement.appendChild(liElement);
     }
   });
+});
+
+// Event listener para el botón "GENERAR PRESUPUESTO"
+document.getElementById("generateBtn").addEventListener("click", function () {
+  const nombreEmpresa = document.getElementById("nombreEmpresa").value;
+  const cifEmpresa = document.getElementById("cifEmpresa").value;
+  const nombreCliente = document.getElementById("nombreCliente").value;
+  const cifCliente = document.getElementById("cifCliente").value;
+  const emailCliente = document.getElementById("emailCliente").value;
+  const telefonoCliente = document.getElementById("telefonoCliente").value;
+  const pais = document.getElementById("pais").value;
+  const ciudad = document.getElementById("ciudad").value;
+  const codigoPostal = document.getElementById("codigoPostal").value;
+  const localidad = document.getElementById("localidad").value;
+  const puertaPiso = document.getElementById("puertaPiso").value;
+  const modelo = document.getElementById("modelo").value;
+  const tela = document.getElementById("tela").value;
+  const muestra = document.getElementById("selected-option").dataset.nombre;
+
+  // Ensure html2canvas is loaded correctly
+  if (typeof html2canvas === "function") {
+    html2canvas(document.getElementById("imagenPiezas"))
+      .then(function (canvas) {
+        const imgData = canvas.toDataURL("image/jpeg");
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.text(20, 20, `Nombre de empresa: ${nombreEmpresa}`);
+        doc.text(20, 30, `CIF/NIF de empresa: ${cifEmpresa}`);
+        doc.text(20, 40, `Nombre del cliente: ${nombreCliente}`);
+        doc.text(20, 50, `CIF/NIF del cliente: ${cifCliente}`);
+        doc.text(20, 60, `Email del cliente: ${emailCliente}`);
+        doc.text(20, 70, `Teléfono del cliente: ${telefonoCliente}`);
+        doc.text(20, 80, `País: ${pais}`);
+        doc.text(20, 90, `Ciudad: ${ciudad}`);
+        doc.text(20, 100, `Código Postal: ${codigoPostal}`);
+        doc.text(20, 110, `Localidad: ${localidad}`);
+        doc.text(20, 120, `Puerta/Piso: ${puertaPiso}`);
+        doc.text(20, 130, `Modelo seleccionado: ${modelo}`);
+        doc.text(20, 140, `Serie seleccionada: ${tela}`);
+        doc.text(20, 150, `Tela seleccionada: ${muestra}`);
+
+        // Add captured image to your PDF
+        doc.addImage(imgData, "JPEG", 20, 160, 170, 100);
+        // Save the PDF with the name "presupuesto.pdf"
+        doc.save("presupuesto.pdf");
+      })
+      .catch(function (error) {
+        console.error("html2canvas error:", error);
+      });
+  } else {
+    console.error("html2canvas is not loaded correctly.");
+  }
 });
 
 // RESUMEN

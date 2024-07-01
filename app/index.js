@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Event listener para el botón "GENERAR PRESUPUESTO"
-document.getElementById("generateBtn").addEventListener("click", function () {
+/* document.getElementById("generateBtn").addEventListener("click", function () {
   const nombreEmpresa = document.getElementById("nombreEmpresa").value;
   const cifEmpresa = document.getElementById("cifEmpresa").value;
   const nombreCliente = document.getElementById("nombreCliente").value;
@@ -150,7 +150,7 @@ document.getElementById("generateBtn").addEventListener("click", function () {
   const tela = document.getElementById("tela").value;
   const muestra = document.getElementById("selected-option").dataset.nombre;
 
-  // Ensure html2canvas is loaded correctly
+  
   if (typeof html2canvas === "function") {
     html2canvas(document.getElementById("imagenPiezas"))
       .then(function (canvas) {
@@ -175,7 +175,7 @@ document.getElementById("generateBtn").addEventListener("click", function () {
 
         // Add captured image to your PDF
         doc.addImage(imgData, "JPEG", 20, 160, 170, 100);
-        // Save the PDF with the name "presupuesto.pdf"
+        
         doc.save("presupuesto.pdf");
       })
       .catch(function (error) {
@@ -184,7 +184,7 @@ document.getElementById("generateBtn").addEventListener("click", function () {
   } else {
     console.error("html2canvas is not loaded correctly.");
   }
-});
+}); */
 
 // RESUMEN
 document.addEventListener("DOMContentLoaded", function () {

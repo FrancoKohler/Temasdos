@@ -8,12 +8,13 @@
     <!--LINK CSS-->
     <link rel="stylesheet" href="./css/style.css" />
     <!--LINK JS-->
-   
    <script defer src="./app/data.js"></script>
    <script defer src="./app/index.js"></script>
+   <script defer src="./app/pdfgenerator.js"></script>
   <!--SCRIPTS PARA HTMLCANVAS Y JSKIT-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+     <script src="https://unpkg.com/pdf-lib@1.17.1"></script>
   </head>
   <body>
     <header>TEMASDOS</header>
@@ -46,8 +47,17 @@
                   required
                     />
                 </div>
-                
-              </div>
+                <div class="form-inputs">
+                    <a class="input-title"> Teléfono</a>
+                    <input
+                  class="top-input"
+                  type="text"
+                  id="telefonoEmpresa"
+                  name="telefonoEmpresa"
+                  required
+                    />
+                </div>
+            </div>
         </div>
     </section>
     <section class="contacto-seccion">
@@ -136,6 +146,17 @@
                         type="local"
                         id="localidad"
                         name="local"
+                        required
+                        />
+                </div>
+                <!--CALLE-->
+                <div class="form-inputs">
+                        <a class="input-title"> Calle*</a>
+                        <input
+                        class="top-input"
+                        type="calle"
+                        id="calle"
+                        name="calle"
                         required
                         />
                 </div>

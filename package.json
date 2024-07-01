@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@pspdfkit/nodejs": "^0.0.5",
     "express": "^4.19.2",
     "jspdf": "^2.5.1",
+    "pdf-lib": "^1.17.1",
     "pdfkit": "^0.15.0"
   },
   "name": "temasods",
@@ -12,5 +14,10 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
-  }
+  },
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

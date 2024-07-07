@@ -18,6 +18,17 @@ async function createPDF() {
   const muestra = document.getElementById("selected-option").dataset.nombre;
   const muestraImg = document.getElementById("selected-option").dataset.img;
   const imagenesDiv = document.getElementById("imagenPiezas");
+  const selectIds = [
+    "pieza1",
+    "pieza2",
+    "pieza3",
+    "pieza4",
+    "pieza5",
+    "pieza6",
+    "pieza7",
+    "pieza8",
+  ];
+
   /*ANCHO Y ALTO IMAGEN*/
   const width = 364;
   const height = 280;
@@ -86,11 +97,30 @@ async function createPDF() {
       font: font,
     });
   }
+
   drawText(page, "Presupuesto", 52, 720, 20, helveticaFont);
-  /*------------RECUADRO--------------*/
+  /*------------RECUADRO PRESUPUESTO--------------*/
   page.drawRectangle({
     x: 50,
     y: 700,
+    width: 490,
+    height: 0.5,
+    borderColor: colorLine,
+    borderWidth: 0.5,
+  });
+  /*------------RECUADRO MODELO--------------*/
+  page.drawRectangle({
+    x: 50,
+    y: 160,
+    width: 490,
+    height: 0.5,
+    borderColor: colorLine,
+    borderWidth: 0.5,
+  });
+  /*------------RECUADRO TARIFA--------------*/
+  page.drawRectangle({
+    x: 50,
+    y: 480,
     width: 490,
     height: 0.5,
     borderColor: colorLine,
@@ -128,15 +158,7 @@ async function createPDF() {
   /*---------MODELO Y CONFIGURACION-----------*/
 
   drawText(page, "Modelo: Yute", 52, 500, 20, helveticaFont);
-  /*------------RECUADRO--------------*/
-  page.drawRectangle({
-    x: 50,
-    y: 480,
-    width: 490,
-    height: 0.5,
-    borderColor: colorLine,
-    borderWidth: 0.5,
-  });
+
   drawText(page, "REFERENCIA", 74, 450, 12, helveticaFont);
   page.drawImage(image, {
     x: 74,
@@ -223,14 +245,24 @@ async function createPDF() {
 
   /*TARIFA*/
   drawText(page, "Tarifa", 52, 180, 20, helveticaFont);
-  /*------------RECUADRO--------------*/
-  page.drawRectangle({
-    x: 50,
-    y: 160,
-    width: 490,
-    height: 0.5,
-    borderColor: colorLine,
-    borderWidth: 0.5,
+  drawText(page, "PIEZA", 76, 140, 8, helveticaFont);
+  drawText(page, "CANT.", 320, 140, 8, helveticaFont);
+  drawText(page, "VALOR U.", 362, 140, 8, helveticaFont);
+  drawText(page, "VALOR TOT.", 441, 140, 8, helveticaFont);
+  /*PRECIOS Y CODIGOS*/
+  selectIds.forEach((selectId, index) => {
+    const selectElement = document.getElementById(selectId);
+    const selectedValue = selectElement.value;
+
+    // Find the corresponding title in the piezas array
+    const piezaData = piezas.find((pieza) => pieza.id === selectedValue);
+    const title = piezaData ? piezaData.title : "";
+
+    // Adjust Y position for each text element
+    const yPos = 120 - index * 20;
+
+    // Draw the text on the PDF page
+    drawText(page, `${title}`, 52, yPos, 8, helveticaFont);
   });
   // Serializar el PDFDocument a bytes
   const pdfBytes = await pdfDoc.save();

@@ -14,8 +14,7 @@
   <!--SCRIPTS PARA HTMLCANVAS Y JSKIT-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-     <script src="https://unpkg.com/pdf-lib@1.17.1"></script>
-  </head>
+    <script src="https://unpkg.com/pdf-lib"></script>
   <body>
     <header>TEMASDOS</header>
     <div class="titulo-solicitud">
@@ -214,7 +213,7 @@
                     <div class="dropdown-icon">&#10095;</div>
                 </div>
                 <div id="dropdown-content" class="dropdown-content">
-                    <div class="tabs">
+                    <div class="tabs" id="telasTabs">
                         <button class="tablinks" onclick="openTab(event, 'brixton')">Brixton</button>
                         <button class="tablinks" onclick="openTab(event, 'camila')">Camila</button>
                         <button class="tablinks" onclick="openTab(event, 'montreal')">Montreal</button>
@@ -224,6 +223,7 @@
                     <div id="tab-content-container">
                         <!-- Aquí se cargarán las opciones de cada tab -->
                     </div>
+                    
                 </div>
             </div>
         </div>

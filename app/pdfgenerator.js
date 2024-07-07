@@ -16,6 +16,11 @@ async function createPDF() {
   const modelo = document.getElementById("modelo").value;
   const tela = document.getElementById("tela").value;
   const muestra = document.getElementById("selected-option").dataset.nombre;
+  const muestraImg = document.getElementById("selected-option").dataset.img;
+  const imagenesDiv = document.getElementById("imagenPiezas");
+  /*ANCHO Y ALTO IMAGEN*/
+  const width = 364;
+  const height = 280;
 
   /*-------YUTE IMG-----*/
   const base64Image =
@@ -23,6 +28,22 @@ async function createPDF() {
 
   const imageBytes = await fetch(base64Image).then((res) => res.arrayBuffer());
 
+  /*------FUNCION PARA SELECCION DE TAB DE TELAS---------*/
+
+  function selectOption(element) {
+    const telaSeleccionada = element.dataset.nombre;
+    const ImagenSeleccionada = element.dataset.img;
+
+    // Actualizar el contenido en el elemento con ID 'selected-option'
+    const selectedOptionElement = document.getElementById("selected-option");
+    const selectedOptionElementImg = document.getElementById("selected-option");
+    if (selectedOptionElement) {
+      selectedOptionElement.innerText = `Tela seleccionada: ${telaSeleccionada}`;
+      selectedOptionElement.dataset.nombre = telaSeleccionada;
+      selectedOptionElementImg.innerHTML = `Tela seleccionada: ${ImagenSeleccionada}`;
+      selectedOptionElementImg.dataset.imagen = ImagenSeleccionada;
+    }
+  }
   // Crear nuevo documento PDF
   const { PDFDocument, StandardFonts, rgb } = PDFLib;
   const pdfDoc = await PDFDocument.create();
@@ -32,7 +53,8 @@ async function createPDF() {
   const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
   /*-------COLOR ------*/
   const color838383 = rgb(0.514, 0.514, 0.514);
-  /*------RECONOCIMEINTO DE FECHA ACTUAL-----*/
+  const colorLine = rgb(0.8706, 0.8706, 0.8706);
+  /*------RECONOCIMIENTO DE FECHA ACTUAL-----*/
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
     currentDate.getMonth() + 1
@@ -53,152 +75,167 @@ async function createPDF() {
   }
 
   const numeroReferencia = generateRandomReferenceNumber();
-  /*--------------Texto referencia-------------------*/
-  const infoText = [
-    "*La fecha de emisión definirá la validez del presupuesto, más info en pie de página.",
-    "*El número de referencia servirá para localizar el presupuesto ya realizado.",
-  ];
+
   /*----AÑADIR TEXTO AL PDF-----*/
-  page.drawText("Presupuesto", {
-    x: 52,
+
+  function drawText(page, text, x, y, size, font) {
+    page.drawText(text, {
+      x: x,
+      y: y,
+      size: size,
+      font: font,
+    });
+  }
+  drawText(page, "Presupuesto", 52, 720, 20, helveticaFont);
+  /*------------RECUADRO--------------*/
+  page.drawRectangle({
+    x: 50,
     y: 700,
-    size: 20,
-    font: helveticaFont,
+    width: 490,
+    height: 0.5,
+    borderColor: colorLine,
+    borderWidth: 0.5,
   });
   /*-------------------INFO CLIENTE------------------- */
-  page.drawText("INFORMACIÓN CLIENTE", {
-    x: 74,
-    y: 650,
-    size: 12,
-    font: helveticaFont,
-  });
-
-  page.drawText(`Nombre: ${nombreCliente}`, {
-    x: 74,
-    y: 630,
-    size: 10,
-    font: helveticaFont,
-  });
-
-  page.drawText(
-    `Direccion: ${calle}, ${puertaPiso}, ${ciudad}, ${codigoPostal} `,
-    {
-      x: 74,
-      y: 610,
-      size: 10,
-      font: helveticaFont,
-    }
+  drawText(page, "INFORMACIÓN CLIENTE", 74, 670, 12, helveticaFont);
+  drawText(page, `Nombre: ${nombreCliente}`, 74, 650, 10, helveticaFont);
+  drawText(
+    page,
+    `Direccion: ${calle},${puertaPiso},${localidad},${ciudad},${codigoPostal}`,
+    74,
+    630,
+    10,
+    helveticaFont
   );
-  page.drawText(`Direccion: ${pais} `, {
-    x: 74,
-    y: 590,
-    size: 10,
-    font: helveticaFont,
-  });
-  page.drawText(`CIF Cliente: ${cifCliente}`, {
-    x: 74,
-    y: 570,
-    size: 10,
-    font: helveticaFont,
-  });
-  page.drawText(`Teléfono: ${telefonoCliente}`, {
-    x: 74,
-    y: 550,
-    size: 10,
-    font: helveticaFont,
-  });
-  page.drawText(`Email: ${emailCliente}`, {
-    x: 74,
-    y: 530,
-    size: 10,
-    font: helveticaFont,
-  });
+  drawText(page, `País: ${pais}`, 74, 610, 10, helveticaFont);
+  drawText(page, `CIF Cliente: ${cifCliente}`, 74, 590, 10, helveticaFont);
+  drawText(page, `Teléfono: ${telefonoCliente}`, 74, 570, 10, helveticaFont);
+  drawText(page, `Email: ${emailCliente}`, 74, 550, 10, helveticaFont);
 
-  /*-------------------INFO EMPRESA-------------------*/
-  page.drawText("INFORMACIÓN EMPRESA", {
-    x: 364,
-    y: 650,
-    size: 12,
-    font: helveticaFont,
-  });
-  page.drawText(`Nombre Empresa: ${nombreEmpresa}`, {
-    x: 364,
-    y: 630,
-    size: 10,
-    font: helveticaFont,
-  });
-  page.drawText(`Teléfono: ${telefonoEmpresa}`, {
-    x: 364,
-    y: 610,
-    size: 10,
-    font: helveticaFont,
-  });
-  page.drawText(`CIF Empresa: ${cifEmpresa}`, {
-    x: 364,
-    y: 590,
-    size: 10,
-    font: helveticaFont,
-  });
+  // -------------------INFO EMPRESA-------------------
+  drawText(page, "INFORMACIÓN EMPRESA", 364, 670, 12, helveticaFont);
+  drawText(
+    page,
+    `Nombre Empresa: ${nombreEmpresa}`,
+    364,
+    650,
+    10,
+    helveticaFont
+  );
+  drawText(page, `Teléfono: ${telefonoEmpresa}`, 364, 630, 10, helveticaFont);
+  drawText(page, `CIF Empresa: ${cifEmpresa}`, 364, 610, 10, helveticaFont);
 
   /*---------MODELO Y CONFIGURACION-----------*/
-  page.drawText("Modelo: Yute", {
-    x: 52,
+
+  drawText(page, "Modelo: Yute", 52, 500, 20, helveticaFont);
+  /*------------RECUADRO--------------*/
+  page.drawRectangle({
+    x: 50,
     y: 480,
-    size: 20,
-    font: helveticaFont,
+    width: 490,
+    height: 0.5,
+    borderColor: colorLine,
+    borderWidth: 0.5,
   });
-  page.drawText("REFERENCIA ", {
-    x: 74,
-    y: 430,
-    size: 12,
-    font: helveticaFont,
-  });
+  drawText(page, "REFERENCIA", 74, 450, 12, helveticaFont);
   page.drawImage(image, {
     x: 74,
     y: 330,
     width: 160,
     height: 80,
   });
-  page.drawText("*imagen de referencia de otra configuración ", {
-    x: 74,
-    y: 300,
-    size: 5,
-    color: color838383,
-    font: helveticaFont,
-  });
-  page.drawText("PRESUPUESTO ", {
-    x: 364,
-    y: 430,
-    size: 10,
-    font: helveticaFont,
-  });
-  page.drawText(`Fecha Emisión: ${formattedDate}`, {
-    x: 364,
-    y: 410,
-    size: 10,
-    font: helveticaFont,
-  });
+  drawText(page, "PRESUPUESTO", 364, 450, 10, helveticaFont);
+  drawText(
+    page,
+    "*imagen de referencia de otra configuración",
+    74,
+    330,
+    5,
+    helveticaFont,
+    color838383
+  );
 
-  /* Número de Referencia */
-  page.drawText(`N° Referencia: ${numeroReferencia}`, {
+  drawText(page, "PRESUPUESTO", 364, 450, 10, helveticaFont);
+  /*Fecha Emision*/
+  drawText(
+    page,
+    `Fecha Emisión: ${formattedDate}`,
+    364,
+    430,
+    8,
+    helveticaFont,
+    color838383
+  );
+  /*Leyenda de presupuesto*/
+  page.drawText("*La fecha de emisión definirá la validez del presupuesto,", {
     x: 364,
     y: 390,
-    size: 10,
+    size: 5,
     font: helveticaFont,
+    color838383,
   });
-  infoText.forEach((line, index) => {
-    page.drawText(line, {
-      x: 364,
-      y: 370 - index * 5, // Ajusta el espaciado vertical según sea necesario
-      size: 5,
-      color: color838383,
-      font: helveticaFont,
-    });
+  // Número de Referencia
+  drawText(
+    page,
+    `N° Referencia: ${numeroReferencia}`,
+    364,
+    410,
+    8,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "más info en pie de página.",
+    364,
+    380,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "*El número de referencia servirá para localizar el",
+    364,
+    370,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "presupuesto ya realizado.",
+    364,
+    360,
+    5,
+    helveticaFont,
+    color838383
+  );
+  /*DIMENSIONES*/
+  drawText(page, "DIMENSIONES", 74, 300, 12, helveticaFont);
+
+  /*TEJIDO*/
+  drawText(page, "TEJIDO", 364, 300, 12, helveticaFont);
+  drawText(page, `Articulo: ${tela}`, 430, 270, 8, helveticaFont, color838383);
+  drawText(page, `Tela: ${muestra}`, 430, 250, 8, helveticaFont, color838383);
+
+  /*FUNCION PARA CREAR IMAGEN DE LA MUESTRA*/
+
+  /*TARIFA*/
+  drawText(page, "Tarifa", 52, 180, 20, helveticaFont);
+  /*------------RECUADRO--------------*/
+  page.drawRectangle({
+    x: 50,
+    y: 160,
+    width: 490,
+    height: 0.5,
+    borderColor: colorLine,
+    borderWidth: 0.5,
   });
   // Serializar el PDFDocument a bytes
   const pdfBytes = await pdfDoc.save();
 
-  // Descargar el PDF
+  /*Descarga el PDF*/
   const blob = new Blob([pdfBytes], { type: "application/pdf" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);

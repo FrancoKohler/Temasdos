@@ -65,6 +65,7 @@ function openTab(evt, tabName) {
 }
 
 // FUNCION DE CREACION DE DIVS DE OPTIONS CON LAS IMG
+
 function selectOption(element) {
   const selectedOption = element.dataset.nombre;
   document.getElementById(
@@ -101,7 +102,7 @@ function initializeTabs() {
     tabContentContainer.appendChild(tabContentDiv);
   }
 
-  // ABRI DIRECTAMENTE LA BRIXTON AL ABRIR EL TAB
+  // ABRIR DIRECTAMENTE LA BRIXTON AL ABRIR EL TAB
   openTab({ currentTarget: document.querySelector(".tablinks") }, "brixton");
 }
 
@@ -157,7 +158,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const imgData = canvas.toDataURL("image/jpeg");
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-
         doc.text(20, 20, `Nombre de empresa: ${nombreEmpresa}`);
         doc.text(20, 30, `CIF/NIF de empresa: ${cifEmpresa}`);
         doc.text(20, 40, `Nombre del cliente: ${nombreCliente}`);

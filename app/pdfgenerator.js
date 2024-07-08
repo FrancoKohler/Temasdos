@@ -7,6 +7,7 @@ async function createPDF() {
   const emailCliente = document.getElementById("emailCliente").value;
   const telefonoCliente = document.getElementById("telefonoCliente").value;
   const telefonoEmpresa = document.getElementById("telefonoEmpresa").value;
+  const emailEmpresa = document.getElementById("emailEmpresa").value;
   const pais = document.getElementById("pais").value;
   const calle = document.getElementById("calle").value;
   const ciudad = document.getElementById("ciudad").value;
@@ -17,7 +18,8 @@ async function createPDF() {
   const tela = document.getElementById("tela").value;
   const muestra = document.getElementById("selected-option").dataset.nombre;
   const muestraImg = document.getElementById("selected-option").dataset.img;
-  const imagenesDiv = document.getElementById("imagenPiezas");
+  const imagenPiezas = document.getElementById("imagenPiezas");
+
   const selectIds = [
     "pieza1",
     "pieza2",
@@ -28,10 +30,6 @@ async function createPDF() {
     "pieza7",
     "pieza8",
   ];
-
-  /*ANCHO Y ALTO IMAGEN*/
-  const width = 364;
-  const height = 280;
 
   /*-------YUTE IMG-----*/
   const base64Image =
@@ -60,11 +58,27 @@ async function createPDF() {
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([550, 750]);
   const image = await pdfDoc.embedPng(imageBytes);
+
+  if (typeof html2canvas === "function") {
+    html2canvas(document.getElementById("imagenPiezas"))
+      .then(async function (canvas) {
+        const imgData = canvas.toDataURL("./image/png");
+        const pdfImage = await pdfDoc.embedPng(imgData);
+        // Add captured image to your PDF
+        page.drawImage(pdfImage, "png", 45, 260, 570, 100);
+      })
+      .catch(function (error) {
+        console.error("html2canvas error:", error);
+      });
+  } else {
+    console.error("html2canvas is not loaded correctly.");
+  }
   // Cargar la fuente Helvetica
   const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
   /*-------COLOR ------*/
-  const color838383 = rgb(0.514, 0.514, 0.514);
-  const colorLine = rgb(0.8706, 0.8706, 0.8706);
+  const color838383 = rgb(0.4, 0.4, 0.4);
+  const colorLine = rgb(0.7, 0.7, 0.7);
+  const colorPrice = rgb(0.3, 0.3, 0.3);
   /*------RECONOCIMIENTO DE FECHA ACTUAL-----*/
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
@@ -89,128 +103,133 @@ async function createPDF() {
 
   /*----AÑADIR TEXTO AL PDF-----*/
 
-  function drawText(page, text, x, y, size, font) {
+  function drawText(page, text, x, y, size, font, color) {
     page.drawText(text, {
       x: x,
       y: y,
       size: size,
       font: font,
+      color: color,
     });
   }
 
-  drawText(page, "Presupuesto", 52, 720, 20, helveticaFont);
+  drawText(page, "Presupuesto", 52, 720, 15, helveticaFont);
   /*------------RECUADRO PRESUPUESTO--------------*/
   page.drawRectangle({
-    x: 50,
-    y: 700,
-    width: 490,
+    x: 48,
+    y: 710,
+    width: 450,
     height: 0.5,
     borderColor: colorLine,
     borderWidth: 0.5,
   });
   /*------------RECUADRO MODELO--------------*/
   page.drawRectangle({
-    x: 50,
-    y: 160,
-    width: 490,
+    x: 48,
+    y: 520,
+    width: 450,
     height: 0.5,
     borderColor: colorLine,
     borderWidth: 0.5,
   });
   /*------------RECUADRO TARIFA--------------*/
   page.drawRectangle({
-    x: 50,
-    y: 480,
-    width: 490,
+    x: 48,
+    y: 210,
+    width: 450,
     height: 0.5,
     borderColor: colorLine,
     borderWidth: 0.5,
   });
+  /*------------RECUADRO PRECIOS--------------*/
+  page.drawRectangle({
+    x: 48,
+    y: 77,
+    width: 450,
+    height: 105,
+    borderColor: rgb(0.7, 0.7, 0.7),
+    borderWidth: 0.5,
+  });
+
   /*-------------------INFO CLIENTE------------------- */
-  drawText(page, "INFORMACIÓN CLIENTE", 74, 670, 12, helveticaFont);
-  drawText(page, `Nombre: ${nombreCliente}`, 74, 650, 10, helveticaFont);
+  drawText(page, "INFORMACIÓN CLIENTE", 74, 690, 10, helveticaFont);
+  drawText(page, `Nombre: ${nombreCliente}`, 74, 670, 8, helveticaFont);
+  drawText(page, `CIF Cliente: ${cifCliente}`, 74, 650, 8, helveticaFont);
+  drawText(page, `País: ${pais}`, 74, 630, 8, helveticaFont);
   drawText(
     page,
     `Direccion: ${calle},${puertaPiso},${localidad},${ciudad},${codigoPostal}`,
     74,
-    630,
-    10,
+    610,
+    8,
     helveticaFont
   );
-  drawText(page, `País: ${pais}`, 74, 610, 10, helveticaFont);
-  drawText(page, `CIF Cliente: ${cifCliente}`, 74, 590, 10, helveticaFont);
-  drawText(page, `Teléfono: ${telefonoCliente}`, 74, 570, 10, helveticaFont);
-  drawText(page, `Email: ${emailCliente}`, 74, 550, 10, helveticaFont);
+  drawText(page, `Teléfono: ${telefonoCliente}`, 74, 590, 8, helveticaFont);
+  drawText(page, `Email: ${emailCliente}`, 74, 570, 8, helveticaFont);
 
   // -------------------INFO EMPRESA-------------------
-  drawText(page, "INFORMACIÓN EMPRESA", 364, 670, 12, helveticaFont);
+  drawText(page, "INFORMACIÓN EMPRESA", 364, 690, 10, helveticaFont);
   drawText(
     page,
     `Nombre Empresa: ${nombreEmpresa}`,
     364,
-    650,
-    10,
+    670,
+    8,
     helveticaFont
   );
-  drawText(page, `Teléfono: ${telefonoEmpresa}`, 364, 630, 10, helveticaFont);
-  drawText(page, `CIF Empresa: ${cifEmpresa}`, 364, 610, 10, helveticaFont);
-
+  drawText(page, `Teléfono: ${telefonoEmpresa}`, 364, 650, 8, helveticaFont);
+  drawText(page, `CIF Empresa: ${cifEmpresa}`, 364, 630, 8, helveticaFont);
+  drawText(page, `Email Empresa: ${emailEmpresa}`, 364, 610, 8, helveticaFont);
   /*---------MODELO Y CONFIGURACION-----------*/
 
-  drawText(page, "Modelo: Yute", 52, 500, 20, helveticaFont);
+  drawText(page, "Modelo: Yute", 52, 530, 15, helveticaFont);
 
-  drawText(page, "REFERENCIA", 74, 450, 12, helveticaFont);
+  drawText(page, "REFERENCIA", 74, 500, 10, helveticaFont);
   page.drawImage(image, {
     x: 74,
-    y: 330,
+    y: 410,
     width: 160,
     height: 80,
   });
-  drawText(page, "PRESUPUESTO", 364, 450, 10, helveticaFont);
+
   drawText(
     page,
     "*imagen de referencia de otra configuración",
     74,
-    330,
+    390,
     5,
     helveticaFont,
     color838383
   );
 
-  drawText(page, "PRESUPUESTO", 364, 450, 10, helveticaFont);
+  drawText(page, "PRESUPUESTO", 364, 500, 10, helveticaFont);
   /*Fecha Emision*/
-  drawText(
-    page,
-    `Fecha Emisión: ${formattedDate}`,
-    364,
-    430,
-    8,
-    helveticaFont,
-    color838383
-  );
-  /*Leyenda de presupuesto*/
-  page.drawText("*La fecha de emisión definirá la validez del presupuesto,", {
-    x: 364,
-    y: 390,
-    size: 5,
-    font: helveticaFont,
-    color838383,
-  });
+  drawText(page, `Fecha Emisión: ${formattedDate}`, 364, 480, 8, helveticaFont);
   // Número de Referencia
   drawText(
     page,
     `N° Referencia: ${numeroReferencia}`,
     364,
-    410,
+    460,
     8,
+    helveticaFont
+  );
+  /*Leyenda de presupuesto*/
+  drawText(
+    page,
+    "*La fecha de emisión definirá la validez del presupuesto,",
+    364,
+    445,
+    5,
     helveticaFont,
     color838383
   );
+
   drawText(
     page,
     "más info en pie de página.",
     364,
-    380,
+    440,
     5,
     helveticaFont,
     color838383
@@ -219,7 +238,7 @@ async function createPDF() {
     page,
     "*El número de referencia servirá para localizar el",
     364,
-    370,
+    435,
     5,
     helveticaFont,
     color838383
@@ -228,28 +247,128 @@ async function createPDF() {
     page,
     "presupuesto ya realizado.",
     364,
-    360,
+    430,
     5,
     helveticaFont,
     color838383
   );
-  /*DIMENSIONES*/
-  drawText(page, "DIMENSIONES", 74, 300, 12, helveticaFont);
+  /*----------------------DIMENSIONES------------------------------*/
+  drawText(page, "DIMENSIONES", 74, 350, 10, helveticaFont);
 
-  /*TEJIDO*/
-  drawText(page, "TEJIDO", 364, 300, 12, helveticaFont);
-  drawText(page, `Articulo: ${tela}`, 430, 270, 8, helveticaFont, color838383);
-  drawText(page, `Tela: ${muestra}`, 430, 250, 8, helveticaFont, color838383);
+  /*----------------------TEJIDO-----------------------------------*/
+  drawText(page, "TEJIDO", 364, 350, 10, helveticaFont);
+  drawText(page, `Articulo: ${tela}`, 430, 330, 8, helveticaFont);
+  drawText(page, `Tela: ${muestra}`, 430, 310, 8, helveticaFont);
 
-  /*FUNCION PARA CREAR IMAGEN DE LA MUESTRA*/
+  /*------------FUNCION PARA CREAR IMAGEN DE LA MUESTRA-----------*/
 
-  /*TARIFA*/
-  drawText(page, "Tarifa", 52, 180, 20, helveticaFont);
-  drawText(page, "PIEZA", 76, 140, 8, helveticaFont);
-  drawText(page, "CANT.", 320, 140, 8, helveticaFont);
-  drawText(page, "VALOR U.", 362, 140, 8, helveticaFont);
-  drawText(page, "VALOR TOT.", 441, 140, 8, helveticaFont);
-  /*PRECIOS Y CODIGOS*/
+  /*-------------------------TARIFA-------------------------------*/
+  drawText(page, "Tarifa", 52, 220, 15, helveticaFont);
+  drawText(page, "PIEZA", 76, 190, 8, helveticaFont);
+  drawText(page, "CANT.", 320, 190, 8, helveticaFont);
+  drawText(page, "VALOR U.", 362, 190, 8, helveticaFont);
+  drawText(page, "VALOR TOT.", 441, 190, 8, helveticaFont);
+  /*-----------------------ACLARACIONES PRECIOS-----------------*/
+  drawText(
+    page,
+    "*Presupuesto con validez de 90 días a partir de la fecha de emisión.",
+    52,
+    65,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "*Los pedidos tendrán un plazo general de entrega de 6 semanas laborables.",
+    52,
+    60,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "No obstante, dicho plazo puede variar en función de la llegada a fábrica del tejido seleccionado, ",
+    52,
+    55,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "el aumento de la demanda temporal o la rotura de stock de otros componentes. ",
+    52,
+    50,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "En ese caso Temasdos informará debidamente de los posibles contratiempos ",
+    52,
+    45,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "indicando la fecha estimada en la confirmación del pedido. Se cobrarán 12€ ",
+    52,
+    40,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "de portes en envíos de mercancía con importe inferior a 300€+ IVA (poufs, ",
+    52,
+    35,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "metrajes, etc.) A partir de 300€, los portes serán gratuitos. ",
+    52,
+    30,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "*Los pedidos se realizarán a través del email pedidos@temasdos.com. Una vez enviada la confirmación del pedido, se considerará conforme si no se recibe una respuesta en el plazo de 2 días.  ",
+    52,
+    15,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "Transcurridos 5 días del envío de dicha confirmación, el pedido no se podrá cambiar ni cancelar. Se cobrarán 12€ de portes en envíos de mercancía con importe inferior a 300€+ IVA (poufs,   ",
+    52,
+    10,
+    5,
+    helveticaFont,
+    color838383
+  );
+  drawText(
+    page,
+    "metrajes, etc.) A partir de 300€, los portes serán gratuitos.   ",
+    52,
+    5,
+    5,
+    helveticaFont,
+    color838383
+  );
+  /*-------------------------PRECIOS Y CODIGOS---------------------*/
   selectIds.forEach((selectId, index) => {
     const selectElement = document.getElementById(selectId);
     const selectedValue = selectElement.value;
@@ -259,10 +378,10 @@ async function createPDF() {
     const title = piezaData ? piezaData.title : "";
 
     // Adjust Y position for each text element
-    const yPos = 120 - index * 20;
+    const yPos = 170 - index * 12;
 
     // Draw the text on the PDF page
-    drawText(page, `${title}`, 52, yPos, 8, helveticaFont);
+    drawText(page, `${title}`, 52, yPos, 8, helveticaFont, colorPrice);
   });
   // Serializar el PDFDocument a bytes
   const pdfBytes = await pdfDoc.save();

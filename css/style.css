@@ -228,10 +228,10 @@ select {
   gap: 1rem;
 }
 
-.div-descuento input {
+.descuento-input {
   border: #a5a5a5 1px solid;
   padding-top: 1rem;
-  cursor: text;
+  cursor: pointer;
 }
 /*BOTON*/
 .btn-pdf {

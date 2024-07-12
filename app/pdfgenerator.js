@@ -60,22 +60,16 @@ async function createPDF() {
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([550, 750]);
   const image = await pdfDoc.embedPng(imageBytes);
+
   if (typeof html2canvas === "function") {
-    try {
-      const canvas = await html2canvas(
-        document.getElementById("imagenPiezas"),
-        {
-          useCORS: true,
-        }
-      );
-      const imgData = canvas.toDataURL("image/png");
-      const pdfImage = await pdfDoc.embedPng(imgData);
-      page.drawImage(pdfImage, { x: 200, y: 160, width: 170, height: 100 });
-    } catch (error) {
-      console.error("Error al generar el canvas:", error);
-    }
+    const canvas = await html2canvas(document.getElementById("imagenPiezas"), {
+      useCORS: true,
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdfImage = await pdfDoc.embedPng(imgData);
+    page.drawImage(pdfImage, { x: 20, y: 160, width: 170, height: 100 });
   } else {
-    console.error("html2canvas no está cargado correctamente.");
+    console.error("html2canvas is not loaded correctly.");
   }
 
   // Cargar la fuente Helvetica

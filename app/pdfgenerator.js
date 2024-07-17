@@ -1,5 +1,7 @@
 async function createPDF() {
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 ms
   // Obtener valores de los inputs
+  const canvas = document.createElement("canvas");
   const nombreEmpresa = document.getElementById("nombreEmpresa").value;
   const cifEmpresa = document.getElementById("cifEmpresa").value;
   const nombreCliente = document.getElementById("nombreCliente").value;
@@ -12,15 +14,14 @@ async function createPDF() {
   const calle = document.getElementById("calle").value;
   const ciudad = document.getElementById("ciudad").value;
   const codigoPostal = document.getElementById("codigoPostal").value;
-  const localidad = document.getElementById("localidad").value;
   const puertaPiso = document.getElementById("puertaPiso").value;
   const tela = document.getElementById("tela").value;
   const muestra = document.getElementById("selected-option").dataset.nombre;
   const muestraImg = document.getElementById("selected-option").dataset.img;
-  const descuento = document.getElementById("descuento").value;
-  const precioConDescuentoElement = document.querySelector(
-    "#resumen li:nth-child(8) span"
-  );
+  const precioTotalElement = document.getElementById("precioTotal");
+  const precioMotorElement = document.getElementById("precioMotor");
+  const descuentoAplicadoElement = document.getElementById("descuentoAplicado");
+  const precioTotalDescElement = document.getElementById("precioTotalDesc");
 
   const selectIds = [
     "pieza1",
@@ -60,17 +61,6 @@ async function createPDF() {
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([550, 750]);
   const image = await pdfDoc.embedPng(imageBytes);
-
-  if (typeof html2canvas === "function") {
-    const canvas = await html2canvas(document.getElementById("imagenPiezas"), {
-      useCORS: true,
-    });
-    const imgData = canvas.toDataURL("image/png");
-    const pdfImage = await pdfDoc.embedPng(imgData);
-    page.drawImage(pdfImage, { x: 20, y: 160, width: 170, height: 100 });
-  } else {
-    console.error("html2canvas is not loaded correctly.");
-  }
 
   // Cargar la fuente Helvetica
   const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -120,7 +110,7 @@ async function createPDF() {
     width: 450,
     height: 0.5,
     borderColor: colorLine,
-    borderWidth: 0.5,
+    borderWidth: 0.2,
   });
 
   page.drawRectangle({
@@ -129,7 +119,7 @@ async function createPDF() {
     width: 60,
     height: 15,
     borderColor: rgb(0.7, 0.7, 0.7),
-    borderWidth: 0.5,
+    borderWidth: 0.2,
   });
 
   /*-------------------INFO CLIENTE------------------- */
@@ -139,7 +129,7 @@ async function createPDF() {
   drawText(page, `País: ${pais}`, 74, 630, 8, helveticaFont);
   drawText(
     page,
-    `Direccion: ${calle},${puertaPiso},${localidad},${ciudad},${codigoPostal}`,
+    `Direccion: ${calle},${puertaPiso},${ciudad},${codigoPostal}`,
     74,
     610,
     8,
@@ -171,7 +161,7 @@ async function createPDF() {
     width: 450,
     height: 0.5,
     borderColor: colorLine,
-    borderWidth: 0.5,
+    borderWidth: 0.2,
   });
   drawText(page, "REFERENCIA", 74, 500, 10, helveticaFont);
   page.drawImage(image, {
@@ -243,6 +233,16 @@ async function createPDF() {
   );
   /*----------------------DIMENSIONES------------------------------*/
   drawText(page, "DIMENSIONES", 74, 350, 10, helveticaFont);
+  if (typeof html2canvas === "function") {
+    const canvas = await html2canvas(document.getElementById("imagenPiezas"), {
+      useCORS: true,
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdfImage = await pdfDoc.embedPng(imgData);
+    page.drawImage(pdfImage, { x: 74, y: 240, width: 170, height: 100 });
+  } else {
+    console.error("html2canvas is not loaded correctly.");
+  }
 
   /*----------------------TEJIDO-----------------------------------*/
   drawText(page, "TEJIDO", 364, 350, 10, helveticaFont);
@@ -251,6 +251,19 @@ async function createPDF() {
 
   /*------------FUNCION PARA CREAR IMAGEN DE LA MUESTRA-----------*/
 
+  if (muestraImg) {
+    const muestraImageBytes = await fetch(muestraImg).then((res) =>
+      res.arrayBuffer()
+    );
+
+    const muestraImage = await pdfDoc.embedPng(muestraImageBytes);
+    page.drawImage(muestraImage, {
+      x: 430,
+      y: 260,
+      width: 60,
+      height: 40,
+    });
+  }
   /*-------------------------TARIFA-------------------------------*/
   drawText(page, "Tarifa", 52, 220, 15, helveticaFont);
   /*------------LINEA TARIFA--------------*/
@@ -260,7 +273,7 @@ async function createPDF() {
     width: 450,
     height: 0.5,
     borderColor: colorLine,
-    borderWidth: 0.5,
+    borderWidth: 0.2,
   });
   drawText(page, "PIEZA", 76, 190, 8, helveticaFont);
   drawText(page, "CANT.", 320, 190, 8, helveticaFont);
@@ -273,7 +286,7 @@ async function createPDF() {
     width: 450,
     height: 105,
     borderColor: rgb(0.7, 0.7, 0.7),
-    borderWidth: 0.5,
+    borderWidth: 0.2,
   });
   /*-----------------------ACLARACIONES PRECIOS-----------------*/
   drawText(
@@ -375,39 +388,87 @@ async function createPDF() {
     helveticaFont,
     color838383
   );
-  drawText(page, "TOTAL", 430, 67, 8, helveticaFont);
+  /*------------RECUADRO MOTOR--------------*/
+  drawText(page, "SUP. MOTOR", 350, 67, 8, helveticaFont);
+  page.drawRectangle({
+    x: 350,
+    y: 50,
+    width: 60,
+    height: 15,
+    borderColor: rgb(0.7, 0.7, 0.7),
+    borderWidth: 0.2,
+  });
+  /*TEXTO MOTOR*/
+  if (precioMotorElement) {
+    const precioMotor =
+      precioMotorElement.textContent || precioMotorElement.innerText;
+    drawText(page, `${precioMotor}`, 352, 54, 8, helveticaFont, colorPrice);
+  } else {
+    console.error("Elemento 'precioMotor' no encontrado");
+  }
   /*------------RECUADRO PRECIOS TOTAL--------------*/
-
+  drawText(page, "TOTAL", 430, 67, 8, helveticaFont);
   page.drawRectangle({
     x: 430,
     y: 50,
     width: 60,
     height: 15,
     borderColor: rgb(0.7, 0.7, 0.7),
-    borderWidth: 0.5,
+    borderWidth: 0.2,
   });
+  /*TEXTO PRECIO TOTAL*/
+  if (precioTotalElement) {
+    const precioTotal =
+      precioTotalElement.textContent || precioTotalElement.innerText;
+    drawText(page, `${precioTotal}`, 432, 54, 8, helveticaFont, colorPrice);
+  } else {
+    console.error("Elemento 'precioTotal' no encontrado");
+  }
+  /*------------RECUADRO PRECIOS DESCUENTO APLICADO--------------*/
   drawText(page, "TOTAL C. DESC", 430, 40, 8, helveticaFont);
-  /*------------RECUADRO PRECIOS C.DESC--------------*/
-
   page.drawRectangle({
     x: 430,
     y: 23,
     width: 60,
     height: 15,
     borderColor: rgb(0.7, 0.7, 0.7),
-    borderWidth: 0.5,
+    borderWidth: 0.2,
   });
+  /*TEXTO PRECIO TOTAL C.DESC*/
+  if (precioTotalDescElement) {
+    const precioTotalDesc =
+      precioTotalDescElement.textContent || precioTotalDescElement.innerText;
+    drawText(page, `${precioTotalDesc}`, 432, 27, 8, helveticaFont, colorPrice);
+  } else {
+    console.error("Elemento 'precioTotalDesc' no encontrado");
+  }
+  /*------------RECUADRO PRECIOS CODIGO DESCUENTO-------------*/
   drawText(page, "DESC", 350, 40, 8, helveticaFont);
-  /*------------RECUADRO PRECIOS C.DESC--------------*/
-  drawText(page, `${descuento}`, 352, 27, 8, helveticaFont, colorPrice);
   page.drawRectangle({
     x: 350,
     y: 23,
     width: 60,
     height: 15,
     borderColor: rgb(0.7, 0.7, 0.7),
-    borderWidth: 0.5,
+    borderWidth: 0.2,
   });
+  /*TEXTO DESCUENTO QUE APLICA*/
+  if (descuentoAplicadoElement) {
+    const descuentoAplicado =
+      descuentoAplicadoElement.textContent ||
+      descuentoAplicadoElement.innerText;
+    drawText(
+      page,
+      `${descuentoAplicado}`,
+      352,
+      27,
+      8,
+      helveticaFont,
+      colorPrice
+    );
+  } else {
+    console.error("Elemento 'descuentoAplicado' no encontrado");
+  }
   /*-------------------------PRECIOS Y CODIGOS---------------------*/
   selectIds.forEach((selectId, index) => {
     const selectElement = document.getElementById(selectId);
@@ -422,15 +483,17 @@ async function createPDF() {
 
     drawText(page, `${title}`, 52, yPos, 8, helveticaFont, colorPrice);
   });
-  // Serializar el PDFDocument a bytes
-  const pdfBytes = await pdfDoc.save();
 
-  /*Descarga el PDF*/
+  // Descargar el PDF
+  const pdfBytes = await pdfDoc.save();
   const blob = new Blob([pdfBytes], { type: "application/pdf" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "Presupuesto.pdf";
-  link.click();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "presupuesto.pdf";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // Añadir event listener al botón

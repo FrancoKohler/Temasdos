@@ -12,7 +12,9 @@
    <script defer src="./app/index.js"></script>
    <script defer src="./app/pdfgenerator.js"></script>
   <!--SCRIPTS PARA HTMLCANVAS Y JSKIT-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas@latest/dist/jspdf-html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://unpkg.com/pdf-lib"></script>
   <body>
@@ -144,17 +146,6 @@
                         type="codigo"
                         id="codigoPostal"
                         name="codigoPostal"
-                        required
-                        />
-                </div>
-                <!--LOCALIDAD SELECTOR-->
-                <div class="form-inputs">
-                        <a class="input-title"> Localidad*</a>
-                        <input
-                        class="top-input"
-                        type="local"
-                        id="localidad"
-                        name="local"
                         required
                         />
                 </div>

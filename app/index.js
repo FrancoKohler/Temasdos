@@ -182,6 +182,23 @@ function generarResumen() {
 
   const precioTotal = precioPiezas + motorTotal;
 
+  /*---------CODIGOS DE DESUENTOS CONST----------*/
+  const codigoDescuento = document.getElementById("descuento").value;
+  const descuento = obtenerDescuento(codigoDescuento);
+  const precioConDescuento = precioTotal * (1 - descuento);
+  /*------FUNCION DE DESCUENTOS Y CODIGOS-------*/
+  function obtenerDescuento(codigo) {
+    switch (codigo) {
+      case "GET20":
+        return 0.2;
+      case "GET35":
+        return 0.35;
+      case "GET40":
+        return 0.4;
+      default:
+        return 0.0;
+    }
+  }
   const resumenElement = document.getElementById("resumen");
   resumenElement.innerHTML = `
     <li>Modelo: ${modelo}</li>
@@ -202,11 +219,25 @@ function generarResumen() {
     }
     <li>Serie seleccionada: ${tela}</li>
     <li>Tela seleccionada: ${muestra}</li>
-    <li>Precio Motor: ${motorTotal.toFixed(2)}€</li>
-    <li>Precio Total: ${precioTotal.toFixed(2)}€</li>
+    <li>Precio Motor: <span id="precioMotor">${motorTotal.toFixed(
+      2
+    )}€</span></li>
+    <li>Precio Total: <span id="precioTotal">${precioTotal.toFixed(
+      2
+    )}€</span></li>
+    <li>Descuento aplicado: <span id="descuentoAplicado">${(
+      descuento * 100
+    ).toFixed(0)}%</span></li>
+    <li>Precio Total con descuento: <span id="precioTotalDesc"> ${precioConDescuento.toFixed(
+      2
+    )}€</span></li>
   `;
 }
-
+document.addEventListener("DOMContentLoaded", function () {
+  document
+    .getElementById("descuento")
+    .addEventListener("input", generarResumen);
+});
 function obtenerPiezasSeleccionadas() {
   const piezasSeleccionadas = [];
   for (let i = 1; i <= 8; i++) {

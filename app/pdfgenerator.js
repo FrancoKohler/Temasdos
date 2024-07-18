@@ -452,6 +452,7 @@ async function createPDF() {
     borderColor: rgb(0.7, 0.7, 0.7),
     borderWidth: 0.2,
   });
+
   /*TEXTO DESCUENTO QUE APLICA*/
   if (descuentoAplicadoElement) {
     const descuentoAplicado =
@@ -483,7 +484,21 @@ async function createPDF() {
 
     drawText(page, `${title}`, 52, yPos, 8, helveticaFont, colorPrice);
   });
+  /*PRECIOS ID PIEZAS*/
+  const preciosMaterial = document.querySelectorAll("#preciosMaterial");
 
+  if (preciosMaterial.length > 0) {
+    preciosMaterial.forEach((precio, index) => {
+      const yPos = 170 - index * 12;
+      const textContent = precio.textContent.trim(); // Obtener el texto del elemento, asegurando que esté limpio
+
+      drawText(page, textContent, 362, yPos, 8, helveticaFont, colorPrice);
+    });
+  } else {
+    console.error(
+      "No se encontraron precios de materiales en el almacenamiento local."
+    );
+  }
   // Descargar el PDF
   const pdfBytes = await pdfDoc.save();
   const blob = new Blob([pdfBytes], { type: "application/pdf" });

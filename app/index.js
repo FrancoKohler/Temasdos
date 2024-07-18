@@ -202,21 +202,23 @@ function generarResumen() {
   const resumenElement = document.getElementById("resumen");
   resumenElement.innerHTML = `
     <li>Modelo: ${modelo}</li>
-    ${
-      piezasFiltradas.length > 0
-        ? "<li>Piezas seleccionadas:</li><ul>" +
-          piezasFiltradas
-            .map(
-              (pieza) =>
-                `<li>${pieza.nombre} - ${obtenerPrecioPorMaterial(
-                  pieza.id,
-                  tela
-                ).toFixed(2)}€</li>`
-            )
-            .join("") +
-          "</ul>"
-        : ""
-    }
+   ${
+     piezasFiltradas.length > 0
+       ? `<li>Piezas seleccionadas:</li><ul>` +
+         piezasFiltradas
+           .map(
+             (pieza) =>
+               `<li>${
+                 pieza.nombre
+               } - <span id="preciosMaterial"> ${obtenerPrecioPorMaterial(
+                 pieza.id,
+                 tela
+               ).toFixed(2)}€</span></li>`
+           )
+           .join("") +
+         "</ul>"
+       : ""
+   }
     <li>Serie seleccionada: ${tela}</li>
     <li>Tela seleccionada: ${muestra}</li>
     <li>Precio Motor: <span id="precioMotor">${motorTotal.toFixed(
@@ -233,6 +235,8 @@ function generarResumen() {
     )}€</span></li>
   `;
 }
+
+/*---------------------DESUCENTO INPUT-----------------*/
 document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("descuento")
